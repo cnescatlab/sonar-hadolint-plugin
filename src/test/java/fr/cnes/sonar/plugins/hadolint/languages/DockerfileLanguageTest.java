@@ -1,0 +1,47 @@
+/*
+ * This file is part of sonar-hadolint-plugin.
+ *
+ * sonar-hadolint-plugin is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sonar-hadolint-plugin is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with sonar-hadolint-plugin.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package fr.cnes.sonar.plugins.hadolint.languages;
+
+import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+public class DockerfileLanguageTest {
+    @Test
+	public void testGetFileSuffixes() {
+		DockerfileLanguage language = new DockerfileLanguage();
+		String[] expected = new String[]{};
+		assertArrayEquals(expected, language.getFileSuffixes());
+	}
+
+	@Test
+	public void testEquals() {
+		DockerfileLanguage language1 = new DockerfileLanguage();
+		DockerfileLanguage language2 = new DockerfileLanguage();
+		assertTrue(language1.equals(language1));
+		assertTrue(!language1.equals(language2));
+	}
+
+	@Test
+	public void testHashCode() {
+		int expected = new DockerfileLanguage().hashCode();
+		int actual = -1317317732;
+		assertEquals(expected, actual);
+	}
+}

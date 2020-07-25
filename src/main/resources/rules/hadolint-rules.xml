@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hadolint-rules>
+	<rule>
+		<key>Hadolint.DL3002</key>
+		<name>Last user should not be root.</name>
+		<description>TO DEFINE</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>20min</remediationFunctionBaseEffort>
+	</rule>
+
+</hadolint-rules>
