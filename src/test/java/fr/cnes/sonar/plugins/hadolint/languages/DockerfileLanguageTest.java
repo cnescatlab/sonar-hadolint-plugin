@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 
 public class DockerfileLanguageTest {
     @Test
@@ -34,8 +34,8 @@ public class DockerfileLanguageTest {
 	public void testEquals() {
 		DockerfileLanguage language1 = new DockerfileLanguage();
 		DockerfileLanguage language2 = new DockerfileLanguage();
-		assertTrue(language1.equals(language1));
-		assertTrue(!language1.equals(language2));
+		assertEquals(language1, language1);
+		assertNotEquals(language1, language2);
 	}
 
 	@Test
