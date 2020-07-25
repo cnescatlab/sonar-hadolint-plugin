@@ -8,7 +8,7 @@ This plugin is free software; you can redistribute it and/or modify it under the
 
 You can get Hadolint on GitHub : [hadolint](https://github.com/hadolint/hadolint).
 
-### Know limitations
+### Known limitations
 
 #### A Dockerfile has no file extension
 
