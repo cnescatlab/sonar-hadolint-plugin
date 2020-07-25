@@ -8,6 +8,8 @@ dist: xenial
 addons:
   sonarcloud:
     organization: "lequal"
+    token:
+      secure: "YYWtQ7l1vBLxDGgJ/lc3Drke67PVzS3R+LmTtBj2MVtMaT9H3wAQJlaBviTEQ21cyv/FKe54rCQHOXbsXE3jEblEfUtorNk3A+yDGmJrqK+nSIlvNqjOzj/X+Ixa/7Ig4QHrhkYQwcEIPrIkZ4v/PXU7W5aXmFz9tr8nzmXOZ7aAMHpwJ+9XLhSS4pdWBPxlUkAkYzQSpXdl3Se5QBt80QhIDhjS/4sqo4ZYF1ktYn7HOUFabtoU45fuZphmJ3fAFWxIJEuSXl4Z/PRhyAi4NvPekN5tfqUO3Pn4c7rUZsVTllaWTpTn/gb8DurQHuafnHJ7gDMWBXmF42Eww9FhFC03zyjMfA9GpoFLrQykpNjeYz32iqryP4HQzdoRsXI/YqohbGh3EteHUVQkbMmeYQIkvnVpEGN+aHdZZT0Cu4P9ygUMFI/BKwonk+r6dvKPp8j7G3sjFWEKZLWd5n54UwhjdY00pTMh6BXzsi3soWewg0U40PEq0lkfGm1vXsMGeZEqM277ufHGipOuT4JjTbr34n/Pmz3PSOV7J48VviFr24x46ahP/oJNHEt7fxW4W7g8ojjdcRVYkaEunmFDl9ry/jQ4xiipJN7+SozGeEeomwU3wTsh9jBXDik2o4zl7GAiag7g1GN15J2tyrYqCQDrqgonGJ85kr1LaaUpsyE="
 
 jdk:
   - openjdk11
