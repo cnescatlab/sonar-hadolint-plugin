@@ -30,6 +30,27 @@ WORKDIR ${foo}   # WORKDIR /bar</pre>
 		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
 	</rule>
 	<rule>
+		<key>Hadolint.DL3001</key>
+		<name><![CDATA[Command does not make sense in a container.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				For some POSIX commands it makes no sense to run them in a Docker container because they are bound to the host or are otherwise dangerous (like ´shutdown´, ´service´, ´ps´, ´free´, ´top´, ´kill´, ´mount´, ´ifconfig´). Interactive utilities also don't make much sense (´nano´, ´vim´).
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+RUN top</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
 		<key>Hadolint.DL3002</key>
 		<name>Last user should not be root.</name>
 		<description>TO DEFINE</description>
