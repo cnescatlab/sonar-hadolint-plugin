@@ -139,12 +139,198 @@ RUN apt-get update && apt-get upgrade </pre>
 			<pre>FROM debian
 RUN apt-get update</pre>]]>
 		</description>
-		<severity>CRITICAL</severity>
+		<severity>MAJOR</severity>
 		<cardinality>SINGLE</cardinality>
 		<status>READY</status>
 		<type>CODE_SMELL</type>
 		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
 		<remediationFunctionBaseEffort>20min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3006</key>
+		<name><![CDATA[Always tag the version of an image explicitly.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				You can never rely that the <b>latest</b> tags is a specific version.
+				<a href="https://docs.docker.com/engine/userguide/dockerimages/">https://docs.docker.com/engine/userguide/dockerimages/</a>
+				<blockquote>Tip: You recommend you always use a specific tagged image, for example ubuntu:12.04. That way you always know exactly what variant of an image is being used.</blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM debian</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM debian:jessie</pre>
+			<h2>Exceptions :</h2>
+			<p>When the image name refers to a previously defined alias:</p>
+			<pre>FROM debian:jessie as build
+RUN build_script
+FROM build as tests
+RUN test_script
+FROM debian:jessie
+COPY --from=build foo .</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3007</key>
+		<name><![CDATA[Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				You can never rely that the <b>latest</b> tags is a specific version.
+				<a href="https://docs.docker.com/engine/userguide/dockerimages/">https://docs.docker.com/engine/userguide/dockerimages/</a>
+				<blockquote>Tip: You recommend you always use a specific tagged image, for example ubuntu:12.04. That way you always know exactly what variant of an image is being used.</blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM debian:latest</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM debian:jessie</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3008</key>
+		<name><![CDATA[Pin versions in apt get install.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#apt-get">https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#apt-get</a>
+				<blockquote>Version pinning forces the build to retrieve a particular version regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.</blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+RUN apt-get install python</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox
+RUN apt-get install python=2.7</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3009</key>
+		<name><![CDATA[Delete the apt-get lists after installing something.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a>
+				<blockquote>In addition, cleaning up the apt cache and removing /var/lib/apt/lists helps keep the image size down. Since the RUN statement starts with apt-get update, the package cache will always be refreshed prior to apt-get install.</blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>RUN apt-get update && apt-get install -y python</pre>
+			<h2>Correct code :</h2>
+			<pre>RUN apt-get update && apt-get install -y python \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*</pre>
+ 			<h2>Notes :</h2>
+			<p>Clean up must be performed in the same RUN step, otherwise it will not affect image size.</p>]]>
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3010</key>
+		<name><![CDATA[Use ADD for extracting archives into an image.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a>
+				<blockquote>Although ADD and COPY are functionally similar, generally speaking, COPY is preferred. That’s because it’s more transparent than ADD. COPY only supports the basic copying of local files into the container, while ADD has some features (like local-only tar extraction and remote URL support) that are not immediately obvious. Consequently, the best use for ADD is local tar file auto-extraction into the image, as in ADD rootfs.tar.xz /.</blockquote>
+			</p>]]>
+		</description>
+		<severity>MINOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3011</key>
+		<name><![CDATA[Valid UNIX ports range from 0 to 65535.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<a href="https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers</a>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+EXPOSE 80000</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox
+EXPOSE 65535</pre>]]>
+		</description>
+		<severity>BLOCKER</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>BUG</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3013</key>
+		<name><![CDATA[Pin versions in pip.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a>
+				<blockquote>Version pinning forces the build to retrieve a particular version regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.</blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM python:3.4
+RUN pip install django
+RUN pip install https://github.com/Banno/carbon/tarball/0.9.x-fix-events-callback</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM python:3.4
+RUN pip install django==1.9
+RUN pip install git+https://github.com/Banno/carbon@0.9.15</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3014</key>
+		<name><![CDATA[Use the -y switch.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Without the <b>--assume-yes</b> option it might be possible that the build breaks without human intervention.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM debian
+RUN apt-get install python=2.7</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM debian
+RUN apt-get install -y python=2.7</pre>]]>
+		</description>
+		<severity>BLOCKER</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
 	</rule>
 
 </hadolint-rules>
