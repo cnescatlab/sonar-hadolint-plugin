@@ -714,7 +714,7 @@ RUN gem install bundler:1.1</pre>]]>
 		<description><![CDATA[
 			<h2>Rationale :</h2>
 			<p>
-				Specifying --platform= in the <a href="https://docs.docker.com/engine/reference/builder/#from">docker file FROM clause</a> forces the Image to build only one target platform. This has a number of negative consequences:
+				Specifying <b>--platform=</b> in the <a href="https://docs.docker.com/engine/reference/builder/#from">docker file FROM clause</a> forces the Image to build only one target platform. This has a number of negative consequences:
 				<ul>
     				<li>It is not possible to build a <a href="https://www.docker.com/blog/docker-official-images-now-multi-platform/">multi-platform Image</a> from this Docker file.</li>
     				<li>The platform that you build on must be the same as the platform specified in <b>--platform=</b></li>
@@ -732,6 +732,158 @@ RUN gem install bundler:1.1</pre>]]>
 		<type>CODE_SMELL</type>
 		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
 		<remediationFunctionBaseEffort>20min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL4000</key>
+		<name><![CDATA[MAINTAINER is deprecated]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<b>MAINTAINER</b> is deprecated since Docker 1.13.0 <a href="https://github.com/lukasmartinelli/hadolint/issues/71">https://github.com/lukasmartinelli/hadolint/issues/71</a>.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+MAINTAINER Lukas Martinelli <me@lukasmartinelli.ch></pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox</pre>]]>
+		</description>
+		<severity>MINOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL4001</key>
+		<name><![CDATA[Either use Wget or Curl but not both.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Don't install two tools that have the same effect and avoid the additional cruft.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM debian
+RUN wget http://google.com
+RUN curl http://bing.com</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM debian
+RUN curl http://google.com
+RUN curl http://bing.com</pre>]]>
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>20min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL4003</key>
+		<name><![CDATA[Multiple CMD instructions found. If you list more than one CMD then only the last CMD will take effect.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Rule also implemented in <a href="https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee">https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee</a>.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+CMD /bin/true
+CMD /bin/false</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox
+CMD /bin/false</pre>]]>
+		</description>
+		<severity>MINOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL4004</key>
+		<name><![CDATA[Multiple ENTRYPOINT instructions found. If you list more than one ENTRYPOINT then only the last ENTRYPOINT will take effect.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Rule also implemented in <a href="https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee">https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee</a>.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+ENTRYPOINT /bin/true
+ENTRYPOINT /bin/false</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox
+ENTRYPOINT /bin/false</pre>]]>
+		</description>
+		<severity>MINOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL4005</key>
+		<name><![CDATA[Use SHELL to change the default shell]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Docker provides a <a href="https://docs.docker.com/engine/reference/builder/#/shell"><b>SHELL</b> instruction</a> which does not require overwriting <b>/bin/sh</b>	 in your container.	
+			</p>
+			<h2>Problematic code :</h2>
+			<pre># Install bash
+RUN apk add --update-cache bash=4.3.42-r3
+
+# Use bash as the default shell
+RUN ln -sfv /bin/bash /bin/sh</pre>
+			<h2>Correct code :</h2>
+			<pre># Install bash
+RUN apk add --update-cache bash=4.3.42-r3
+
+# Use bash as the default shell
+SHELL ["/bin/bash", "-c"]</pre>]]>
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL4006</key>
+		<name><![CDATA[Set the SHELL option -o pipefail before RUN with a pipe in]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<blockquote><a href="https://github.com/docker/docker.github.io/blob/master/develop/develop-images/dockerfile_best-practices.md#using-pipes">https://github.com/docker/docker.github.io/blob/master/develop/develop-images/dockerfile_best-practices.md#using-pipes</a></blockquote>
+			<p>Some <b>RUN</b> commands depend on the ability to pipe the output of one command into another, using the pipe character (|), as in the following example:</p>
+			<pre>RUN wget -O - https://some.site | wc -l > /number</pre>
+			<p>
+				Docker executes these commands using the <b>/bin/sh -c</b> interpreter, which only evaluates the exit code of the last operation in the pipe to determine success. In the example above this build step succeeds and produces a new image so long as the <b>wc -l</b> command succeeds, even if the <b>wget</b> command fails.
+			</p>
+			<p>
+				If you want the command to fail due to an error at any stage in the pipe, prepend <b>set -o pipefail &&</b> to ensure that an unexpected error prevents the build from inadvertently succeeding.
+			</p>
+			<p>
+				Since there are some shells that do not accept the <b>-o pipefail</b> option, it is not enough to add <b>set -o pipefail</b> inside the <b>RUN</b> instruction. Therefore, we recommend to always explicitly the <b>SHELL</b> before using pipes in <b>RUN</b>.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>RUN wget -O - https://some.site | wc -l > /number</pre>
+			<h2>Correct code :</h2>
+			<pre>SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN wget -O - https://some.site | wc -l > /number</pre>
+			<p>Or in case of busybox in an Alpine image:</p>
+			<pre>SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+RUN wget -O - https://some.site | wc -l > /number</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>15min</remediationFunctionBaseEffort>
 	</rule>
 
 </hadolint-rules>
