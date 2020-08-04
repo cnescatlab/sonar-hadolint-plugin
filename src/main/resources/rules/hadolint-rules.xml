@@ -332,5 +332,175 @@ RUN apt-get install -y python=2.7</pre>]]>
 		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
 		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
 	</rule>
+	<rule>
+		<key>Hadolint.DL3015</key>
+		<name><![CDATA[Avoid additional packages by specifying --no-install-recommends.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Avoid installing additional packages that you did not explicitly want.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+RUN apt-get install -y python=2.7</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox
+RUN apt-get install -y --no-install-recommends python=2.7</pre>]]>
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>15min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3016</key>
+		<name><![CDATA[Pin versions in npm.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Version pinning forces the build to retrieve a particular version regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.
+				<blockquote><a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a></blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM node:8.9.1
+
+RUN npm install express
+RUN npm install @myorg/privatepackage
+RUN npm install express sax@0.1.1
+RUN npm install --global express
+RUN npm install git+ssh://git@github.com:npm/npm.git
+RUN npm install git+http://isaacs@github.com/npm/npm
+RUN npm install git+https://isaacs@github.com/npm/npm.git
+RUN npm install git://github.com/npm/npm.git</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM node:8.9.1
+
+RUN npm install express@4.1.1
+RUN npm install @myorg/privatepackage@">=0.1.0"
+RUN npm install express@"4.1.1" sax@0.1.1
+RUN npm install --global express@"4.1.1"
+RUN npm install git+ssh://git@github.com:npm/npm.git#v1.0.27
+RUN npm install git+http://isaacs@github.com/npm/npm#semver:^5.0
+RUN npm install git+https://isaacs@github.com/npm/npm.git#v1.0.27
+RUN npm install git://github.com/npm/npm.git#v1.0.27</pre>
+			<h2>Exceptions :</h2>
+			<p>Pin your versions in <b>package.json</b> and run <b>npm install</b> with no arguments.</p>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3017</key>
+		<name><![CDATA[Do not use apk upgrade]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				You should avoid <b>RUN apk upgrade</b>, as many of the “essential” packages from the parent images won’t upgrade inside an unprivileged container. If a package contained in the parent image is out-of-date, you should contact its maintainers. If you know there’s a particular package, <b>foo</b>, that needs to be updated, use <b>apk --no-cache add foo</b> to update automatically.
+				<blockquote>inspired by <a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run">https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run</a></blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM alpine:3.7
+RUN apk update \
+    && apk upgrade \
+    && apk add foo=1.0 \
+    && rm -rf /var/cache/apk/*</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM alpine:3.7
+RUN apk --no-cache add foo=1.0</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>20min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3018</key>
+		<name><![CDATA[Pin versions in apk add]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Version pinning forces the build to retrieve a limited range of versions, or an exact particular version, regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.
+				<blockquote><a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a></blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM alpine:3.7
+RUN apk --no-cache add foo</pre>
+			<h2>Correct code (Partial pin glob):</h2>
+			<pre>FROM alpine:3.7
+RUN apk --no-cache add foo=~1.23</pre>
+			<h2>Correct code (Exact pin):</h2>
+			<pre>FROM alpine:3.7
+RUN apk --no-cache add foo=1.23</pre>
+			<p><b>Note:</b> Pinning exact versions can cause future builds to suddenly fail if that version is no longer available. Use with caution.</p>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3019</key>
+		<name><![CDATA[Use the --no-cache switch]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				As of Alpine Linux 3.3 there exists a new <b>--no-cache</b> option for <b>apk</b>. It allows users to install packages with an index that is updated and used on-the-fly and not cached locally:</br>
+This avoids the need to use <b>--update</b> and remove <b>/var/cache/apk/*</b> when done installing packages.
+				<blockquote>inspired by <a href="https://github.com/gliderlabs/docker-alpine/blob/master/docs/usage.md#disabling-cache">https://github.com/gliderlabs/docker-alpine/blob/master/docs/usage.md#disabling-cache</a></blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM alpine:3.7
+RUN apk update \
+    && apk add foo=1.0 \
+    && rm -rf /var/cache/apk/*</pre>
+			<pre>FROM alpine:3.7
+RUN apk add --update foo=1.0
+    && rm -rf /var/cache/apk/*</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM alpine:3.7
+RUN apk --no-cache add foo=1.0</pre>]]>
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3020</key>
+		<name><![CDATA[Use COPY instead of ADD for files and folders]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#add-or-copy">https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#add-or-copy</a>
+				<blockquote>For other items (files, directories) that do not require ADD’s tar auto-extraction capability, you should always use COPY.</blockquote>
+				Rule also implemented in <a href="https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee">https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee</a>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM python:3.4
+ADD requirements.txt /usr/src/app/*</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM python:3.4
+COPY requirements.txt /usr/src/app/</pre>
+			]]>
+		</description>
+		<severity>MINOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
 
 </hadolint-rules>
