@@ -502,5 +502,236 @@ COPY requirements.txt /usr/src/app/</pre>
 		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
 		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
 	</rule>
+	<rule>
+		<key>Hadolint.DL3021</key>
+		<name><![CDATA[COPY with more than 2 arguments requires the last argument to end with /]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<a href="https://docs.docker.com/engine/reference/builder/#copy">https://docs.docker.com/engine/reference/builder/#copy</a>
+				<blockquote>If multiple resources are specified, either directly or due to the use of a wildcard, then must be a directory, and it must end with a slash /</blockquote>
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM node:carbon
+COPY package.json yarn.lock my_app</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM node:carbon
+COPY package.json yarn.lock my_app/</pre>
+			]]>
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3022</key>
+		<name><![CDATA[COPY --from should reference a previously defined FROM alias]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Trying to copy from a missing image alias results in an error.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM debian:jesse
+RUN stuff
+FROM debian:jesse
+COPY --from=build some stuff ./</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM debian:jesse as build
+RUN stuff
+FROM debian:jesse
+COPY --from=build some stuff ./</pre>]]>
+		</description>
+		<severity>BLOCKER</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>BUG</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3023</key>
+		<name><![CDATA[COPY --from cannot reference its own FROM alias]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Trying to copy from the same image the instruction is running in results in an error.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM debian:jesse as build
+COPY --from=build some stuff ./</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM debian:jesse as build
+RUN stuff
+FROM debian:jesse
+COPY --from=build some stuff ./</pre>]]>
+		</description>
+		<severity>BLOCKER</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>BUG</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3024</key>
+		<name><![CDATA[FROM aliases (stage names) must be unique]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Defining duplicate stage names results in an error.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM debian:jesse as build
+RUN stuff
+FROM debian:jesse as build
+RUN more_stuff</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM debian:jesse as build
+RUN stuff
+FROM debian:jesse as another-alias
+RUN more_stuff</pre>]]>
+		</description>
+		<severity>BLOCKER</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>BUG</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3025</key>
+		<name><![CDATA[Use arguments JSON notation for CMD and ENTRYPOINT arguments]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Trying to copy from the same image the instruction is running in results in an error.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+ENTRYPOINT s3cmd</pre>
+			<pre>FROM busybox
+CMD my-service server</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox
+ENTRYPOINT ["s3cmd"]</pre>
+			<pre>FROM busybox
+CMD ["my-service", "server"]</pre>
+			<p>
+				<b>Warning:</b> Docker <b>CMD</b> does not process <b>$ENVIRONMENT_VARIABLE</b>s, that’s a side-effect of using <b>sh -c</b> as the default entry-point. Using the JSON notation means that you have to figure out how to handle environment variables yourself.
+			</p>
+			<p>
+				<b>Warning:</b> The <b>CMD</b> exec form is parsed as a JSON array, so you <b>MUST</b> use double quotes (") instead of single quote (').
+			</p>
+			See <a href="https://docs.docker.com/v17.09/engine/reference/builder/#cmd">https://docs.docker.com/v17.09/engine/reference/builder/#cmd</a> for more info.]]>
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3026</key>
+		<name><![CDATA[Use only an allowed registry in the FROM image]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Using the <b>FROM</b> instruction is a huge exercise in trust, you have to trust that a particular version or an image is safe for you to use, and that it will never be retagged maliciously. In order to prevent that, some companies copy trusted images into their own repositories, and reference them directly.
+			</p>
+			<p>For example, this would be an untrusted image :</p>
+			<pre>FROM randomguy/fancy:10
+...</pre>
+			<p>But after an audit, the company decides to copy the image into their own repository, as it was deemed safe :</p>
+			<pre>FROM my-registry.com/fancy:10
+...</pre>
+			<p>The idea is that hadolint can warn whenever an untrusted repo is used, you can use the <b>--trusted-registry</b> flag for that</p>
+			<pre>hadolint --trusted-registry my-registry.com Dockerfile</pre>
+			<h2>Problematic code :</h2>
+			<pre>FROM randomguy/python:3.6
+...</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM my-registry.com/python:3.6
+...</pre>]]>
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>VULNERABILITY</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>30min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3027</key>
+		<name><![CDATA[Do not use apt as it is meant to be an end-user tool, use apt-get or apt-cache instead.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				<b>apt</b> is discouraged by the linux distributions as an unattended tool as its interface may suffer changes between versions. Better use the more stable <b>apt-get</b> and <b>apt-cache</b>
+			<p>
+			<h2>Problematic code :</h2>
+			<pre>FROM busybox
+RUN apt install curl=1.1.0</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox
+RUN apt-get install curl=1.1.0</pre>]]>
+		</description>
+		<severity>MINOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3028</key>
+		<name><![CDATA[Pin versions in gem install]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a>
+			<blockquote>Version pinning forces the build to retrieve a particular version regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.</blockquote>
+			<h2>Problematic code :</h2>
+			<pre>FROM ruby:2
+RUN gem install bundler</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM ruby:2
+RUN gem install bundler:1.1</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
+	</rule>
+	<rule>
+		<key>Hadolint.DL3029</key>
+		<name><![CDATA[Do not use --platform= with FROM.]]></name>
+		<description><![CDATA[
+			<h2>Rationale :</h2>
+			<p>
+				Specifying --platform= in the <a href="https://docs.docker.com/engine/reference/builder/#from">docker file FROM clause</a> forces the Image to build only one target platform. This has a number of negative consequences:
+				<ul>
+    				<li>It is not possible to build a <a href="https://www.docker.com/blog/docker-official-images-now-multi-platform/">multi-platform Image</a> from this Docker file.</li>
+    				<li>The platform that you build on must be the same as the platform specified in <b>--platform=</b></li>
+				</ul>
+				A better approach is to omit <b>FROM --platform</b> in the docker file and to specify in <b>buildx --platform=</b> during the build if control of the image platform target is needed.
+			</p>
+			<h2>Problematic code :</h2>
+			<pre>FROM --platform=x86 busybox</pre>
+			<h2>Correct code :</h2>
+			<pre>FROM busybox</pre>]]>
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<type>CODE_SMELL</type>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
+		<remediationFunctionBaseEffort>20min</remediationFunctionBaseEffort>
+	</rule>
 
 </hadolint-rules>
