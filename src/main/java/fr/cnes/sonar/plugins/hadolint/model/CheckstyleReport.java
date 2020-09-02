@@ -28,8 +28,6 @@ import java.util.List;
  * Class used to unmarshal hadolint xml file.
  *
  * It contains meta data about the analyzed project.
- *
- * @author lequal
  */
 @XStreamAlias("checkstyle")
 @XStreamInclude(CheckstyleFile.class)

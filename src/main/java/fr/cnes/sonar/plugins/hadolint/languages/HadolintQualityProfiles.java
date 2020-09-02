@@ -28,8 +28,6 @@ import fr.cnes.sonar.plugins.hadolint.settings.HadolintPluginProperties;
 
 /**
  * Built-in quality profile format since SonarQube 6.6.
- *
- * @author lequal
  */
 public final class HadolintQualityProfiles implements BuiltInQualityProfilesDefinition {
 

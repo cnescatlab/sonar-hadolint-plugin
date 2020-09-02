@@ -9,7 +9,7 @@
     <name>SonarQube Hadolint Plugin</name>
 
     <description>Hadolint plugin for SonarQube</description>
-    <url>https://github.com/lequal/sonar-hadolint-plugin</url>
+    <url>https://github.com/cnescatlab/sonar-hadolint-plugin</url>
     <inceptionYear>2020</inceptionYear>
 
     <licenses>
@@ -45,8 +45,8 @@
         <project.key>hadolint</project.key>
         <sonar.pluginKey>sonar-hadolint-plugin</sonar.pluginKey>
         <sonar.pluginClass>fr.cnes.sonar.plugins.hadolint.HadolintPlugin</sonar.pluginClass>
-        <sonar.pluginUrl>https://github.com/lequal/sonar-hadolint-plugin</sonar.pluginUrl>
-        <sonar.pluginSourcesUrl>https://github.com/lequal/sonar-hadolint-plugin</sonar.pluginSourcesUrl>
+        <sonar.pluginUrl>https://github.com/cnescatlab/sonar-hadolint-plugin</sonar.pluginUrl>
+        <sonar.pluginSourcesUrl>https://github.com/cnescatlab/sonar-hadolint-plugin</sonar.pluginSourcesUrl>
         <sonar.pluginOrganizationName>CNES</sonar.pluginOrganizationName>
         <sonar.sources>src/main/java</sonar.sources>
         <sonar.test>src/test/java</sonar.test>

@@ -26,8 +26,6 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Specific Hadolint rules definition provided by resource file.
- *
- * @author lequal
  */
 public class HadolintRulesDefinition implements RulesDefinition {
 

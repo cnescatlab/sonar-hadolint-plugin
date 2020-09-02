@@ -24,8 +24,6 @@ import org.sonar.api.Plugin;
 
 /**
  * This class is the entry point for all extensions.
- * 
- * @author lequal
  */
 public class HadolintPlugin implements Plugin {
 

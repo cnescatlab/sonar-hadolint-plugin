@@ -48,8 +48,6 @@ import java.util.*;
 /**
  * Executed during sonar-scanner call.
  * Import checkstyle formatted Hadolint reports into SonarQube.
- *
- * @author lequal
  */
 public class HadolintSensor implements Sensor {
 

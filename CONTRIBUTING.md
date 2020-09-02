@@ -1,6 +1,6 @@
 # Contributing to Sonar Hadolint Plugin for SonarQube
 First off, thanks for taking the time to contribute!
-The following is a set of guidelines for contributing to i-Code CNES plugin for SonarQube, which are hosted in the [Lequal Organization](https://github.com/lequal) on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to i-Code CNES plugin for SonarQube, which are hosted in the [CNES Catlab Organization](https://github.com/cnescatlab) on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 #### Table Of Contents
 + [Code of Conduct](#code-of-conduct)
@@ -11,7 +11,7 @@ The following is a set of guidelines for contributing to i-Code CNES plugin for 
   * [Git Commit Messages](#git-commit-messages)
 
 ## Code of Conduct
-This project and everyone participating in it is governed by the [Lequal Code of Conduct](CODE_OF_CONDUCT.md). 
+This project and everyone participating in it is governed by the [CNES Catlab Code of Conduct](CODE_OF_CONDUCT.md). 
 By participating, you are expected to uphold this code. 
 Please report unacceptable behavior.
 
@@ -34,7 +34,7 @@ Explain the problem and include additional details to help maintainers reproduce
 
 Provide more context by answering these questions:
 * **Did the problem start happening recently** (e.g. after updating to a new version of the plugin or SonarQube) or was this always a problem?
-* If the problem started happening recently, **can you reproduce the problem in an older version?** What's the most recent version in which the problem doesn't happen? You can download older versions from [the releases page](https://github.com/lequal/sonar-hadolint-plugin/releases).
+* If the problem started happening recently, **can you reproduce the problem in an older version?** What's the most recent version in which the problem doesn't happen? You can download older versions from [the releases page](https://github.com/cnescatlab/sonar-hadolint-plugin/releases).
 * **Can you reliably reproduce the issue?** If not, provide details about how often the problem happens and under which conditions it normally happens.
 
 Include details about your configuration and environment:
@@ -74,7 +74,7 @@ Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com
 
 All contributions are welcome. They are made via a *pull request* on the branch `dev` which is the branch of the next version.
 
-* pull request with **major** changes must be approved by at least one maintainer of each team and the LEQUAL.
+* pull request with **major** changes must be approved by at least one maintainer of each team and the CNES Catlab.
 
 * pull requests with **minor** changes must be approved by at least one organization's member.
  

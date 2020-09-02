@@ -32,8 +32,6 @@ import java.util.Collection;
  * Class used to unmarshal ShellCheck xml file (results and rules definition).
  *
  * It contains useful methods to handle xml files.
- *
- * @author lequal
  */
 public class XmlHandler {
 

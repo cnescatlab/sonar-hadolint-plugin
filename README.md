@@ -74,11 +74,11 @@ If you experienced a problem with the plugin please open an issue. Inside this i
 
 If you want to do a PR, please put inside of it the reason of this pull request. If this pull request fix an issue please insert the number of the issue or explain inside of the PR how to reproduce this issue.
 
-All details are available in [CONTRIBUTING](https://github.com/lequal/sonar-hadolint-plugin/CONTRIBUTING.md).
+All details are available in [CONTRIBUTING](https://github.com/cnescatlab/sonar-hadolint-plugin/CONTRIBUTING.md).
 
 ### Feedback and Support
 
-Bugs and Feature requests: https://github.com/lequal/sonar-hadolint-plugin/issues
+Bugs and Feature requests: https://github.com/cnescatlab/sonar-hadolint-plugin/issues
 
 ### License
 Licensed under the [GNU General Public License, Version 3.0](https://www.gnu.org/licenses/gpl.txt)

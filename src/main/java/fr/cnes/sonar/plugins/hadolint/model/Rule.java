@@ -21,8 +21,6 @@ package fr.cnes.sonar.plugins.hadolint.model;
  * Class used to unmarshal ShellCheck xml file.
  *
  * It contains data about defined rule.
- *
- * @author lequal
  */
 public class Rule {
 
