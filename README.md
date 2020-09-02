@@ -39,6 +39,7 @@ It also provides a basic text highlighting when you check the code on SonarQube 
 ### Quickstart
 - Setup a SonarQube instance.
 - Install Hadolint command line tool.
+- Download plugin JAR file from GitHub Releases page, or build it (see dedicated section below)
 - Install `sonar-hadolint-plugin-*.jar` in `<SONARQUBE_HOME>/extensions/plugins/`.
 - Run Hadolint to produce a report in **checkstyle format**
   - For exemple : `hadolint -f checkstyle Dockerfile > hadolint-report.xml`
@@ -62,7 +63,11 @@ Go to the project page to find indications : https://github.com/hadolint/hadolin
 |        1.0.0       |          1.18.0         |        7.9 -> 8.4           |
 
 ### Building the plugin
-If you want to build the plugin, open a terminal at the project's root and simply use the following Maven command : `mvn clean package`
+If you want to build the plugin :
+- download the project code from GitHub
+- open a terminal at the project's root
+- simply use the following Maven command : `mvn clean package`
+- plugin JAR file will then be available inside the target/ directory
 
 ### How to contribute
 If you experienced a problem with the plugin please open an issue. Inside this issue please explain us how to reproduce this issue and paste the log. 
