@@ -1,4 +1,4 @@
-# sonar-hadolint-plugin
+# [WIP] Hadolint SonarQube Plugin
 
 SonarQube plugin for the Dockerfile analysis tool Hadolint.
 
@@ -60,6 +60,9 @@ Go to the project page to find indications : https://github.com/hadolint/hadolin
 |   plugin version   |    hadolint version     | supported SonarQube version |
 |:------------------:|:-----------------------:|:---------------------------:|
 |        1.0.0       |          1.18.0         |        7.9 -> 8.4           |
+
+### Building the plugin
+If you want to build the plugin, open a terminal at the project's root and simply use the following Maven command : `mvn clean package`
 
 ### How to contribute
 If you experienced a problem with the plugin please open an issue. Inside this issue please explain us how to reproduce this issue and paste the log. 
