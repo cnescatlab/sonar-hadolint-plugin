@@ -1,17 +1,9 @@
 <h2>Rationale :</h2>
 <p>
-    By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-    You also often times don't know the <b>WORKDIR</b> context of your base container.
+For some POSIX commands it makes no sense to run them in a Docker container because they are bound to the host or are otherwise dangerous (like ´shutdown´, ´service´, ´ps´, ´free´, ´top´, ´kill´, ´mount´, ´ifconfig´). Interactive utilities also don't make much sense (´nano´, ´vim´).
 </p>
 <h2>Problematic code :</h2>
 <pre>FROM busybox
-WORKDIR usr/src/app</pre>
+RUN top</pre>
 <h2>Correct code :</h2>
-<pre>FROM busybox
-WORKDIR /usr/src/app</pre>
-<h2>Exceptions :</h2>
-<p>When using environment replacements.
-    <pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-</p>
+<pre>FROM busybox</pre>

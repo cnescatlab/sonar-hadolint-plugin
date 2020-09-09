@@ -1,17 +1,13 @@
 <h2>Rationale :</h2>
 <p>
-    By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-    You also often times don't know the <b>WORKDIR</b> context of your base container.
+<a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a>
+<blockquote>In addition, cleaning up the apt cache and removing /var/lib/apt/lists helps keep the image size down. Since the RUN statement starts with apt-get update, the package cache will always be refreshed prior to apt-get install.</blockquote>
 </p>
 <h2>Problematic code :</h2>
-<pre>FROM busybox
-WORKDIR usr/src/app</pre>
+<pre>RUN apt-get update && apt-get install -y python</pre>
 <h2>Correct code :</h2>
-<pre>FROM busybox
-WORKDIR /usr/src/app</pre>
-<h2>Exceptions :</h2>
-<p>When using environment replacements.
-    <pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-</p>
+<pre>RUN apt-get update && apt-get install -y python \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*</pre>
+ 			<h2>Notes :</h2>
+<p>Clean up must be performed in the same RUN step, otherwise it will not affect image size.</p>

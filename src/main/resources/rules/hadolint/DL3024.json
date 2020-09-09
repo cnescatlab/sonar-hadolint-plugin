@@ -1,14 +1,14 @@
 {
-    "title": "Use absolute WORKDIR.",
-    "type": "CODE_SMELL",
-    "status": "ready",
+    "title": "FROM aliases (stage names) must be unique",
+    "defaultSeverity": "BLOCKER",
+    "status": "READY",
+    "type": "BUG",
     "remediation": {
       "func": "Constant\/Issue",
-      "constantCost": "10min"
+      "constantCost": "5min"
     },
     "tags": [
       "dockerfile",
       "hadolint"
-    ],
-    "defaultSeverity": "Critical"
-  }
+    ]
+}

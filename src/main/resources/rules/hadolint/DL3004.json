@@ -1,14 +1,14 @@
 {
-    "title": "Use absolute WORKDIR.",
+    "title": "Do not use sudo.",
+    "defaultSeverity": "CRITICAL",
+    "status": "READY",
     "type": "CODE_SMELL",
-    "status": "ready",
     "remediation": {
       "func": "Constant\/Issue",
-      "constantCost": "10min"
+      "constantCost": "20min"
     },
     "tags": [
       "dockerfile",
       "hadolint"
-    ],
-    "defaultSeverity": "Critical"
-  }
+    ]
+}

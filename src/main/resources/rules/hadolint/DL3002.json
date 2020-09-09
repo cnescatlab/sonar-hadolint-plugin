@@ -1,14 +1,14 @@
 {
-    "title": "Use absolute WORKDIR.",
+    "title": "Last user should not be root.",
+    "defaultSeverity": "CRITICAL",
+    "status": "READY",
     "type": "CODE_SMELL",
-    "status": "ready",
     "remediation": {
       "func": "Constant\/Issue",
-      "constantCost": "10min"
+      "constantCost": "30min"
     },
     "tags": [
       "dockerfile",
       "hadolint"
-    ],
-    "defaultSeverity": "Critical"
-  }
+    ]
+}

@@ -1,17 +1,29 @@
 <h2>Rationale :</h2>
 <p>
-    By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-    You also often times don't know the <b>WORKDIR</b> context of your base container.
+Version pinning forces the build to retrieve a particular version regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.
+<blockquote><a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a></blockquote>
 </p>
 <h2>Problematic code :</h2>
-<pre>FROM busybox
-WORKDIR usr/src/app</pre>
+<pre>FROM node:8.9.1
+
+RUN npm install express
+RUN npm install @myorg/privatepackage
+RUN npm install express sax@0.1.1
+RUN npm install --global express
+RUN npm install git+ssh://git@github.com:npm/npm.git
+RUN npm install git+http://isaacs@github.com/npm/npm
+RUN npm install git+https://isaacs@github.com/npm/npm.git
+RUN npm install git://github.com/npm/npm.git</pre>
 <h2>Correct code :</h2>
-<pre>FROM busybox
-WORKDIR /usr/src/app</pre>
+<pre>FROM node:8.9.1
+
+RUN npm install express@4.1.1
+RUN npm install @myorg/privatepackage@">=0.1.0"
+RUN npm install express@"4.1.1" sax@0.1.1
+RUN npm install --global express@"4.1.1"
+RUN npm install git+ssh://git@github.com:npm/npm.git#v1.0.27
+RUN npm install git+http://isaacs@github.com/npm/npm#semver:^5.0
+RUN npm install git+https://isaacs@github.com/npm/npm.git#v1.0.27
+RUN npm install git://github.com/npm/npm.git#v1.0.27</pre>
 <h2>Exceptions :</h2>
-<p>When using environment replacements.
-    <pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-</p>
+<p>Pin your versions in <b>package.json</b> and run <b>npm install</b> with no arguments.</p>

@@ -1,17 +1,12 @@
 <h2>Rationale :</h2>
 <p>
-    By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-    You also often times don't know the <b>WORKDIR</b> context of your base container.
+<a href="https://docs.docker.com/engine/reference/builder/#copy">https://docs.docker.com/engine/reference/builder/#copy</a>
+<blockquote>If multiple resources are specified, either directly or due to the use of a wildcard, then must be a directory, and it must end with a slash /</blockquote>
 </p>
 <h2>Problematic code :</h2>
-<pre>FROM busybox
-WORKDIR usr/src/app</pre>
+<pre>FROM node:carbon
+COPY package.json yarn.lock my_app</pre>
 <h2>Correct code :</h2>
-<pre>FROM busybox
-WORKDIR /usr/src/app</pre>
-<h2>Exceptions :</h2>
-<p>When using environment replacements.
-    <pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-</p>
+<pre>FROM node:carbon
+COPY package.json yarn.lock my_app/</pre>
+

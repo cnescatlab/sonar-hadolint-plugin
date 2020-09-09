@@ -1,17 +1,10 @@
 <h2>Rationale :</h2>
 <p>
-    By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-    You also often times don't know the <b>WORKDIR</b> context of your base container.
+You can never rely that the <b>latest</b> tags is a specific version.
+<a href="https://docs.docker.com/engine/userguide/dockerimages/">https://docs.docker.com/engine/userguide/dockerimages/</a>
+<blockquote>Tip: You recommend you always use a specific tagged image, for example ubuntu:12.04. That way you always know exactly what variant of an image is being used.</blockquote>
 </p>
 <h2>Problematic code :</h2>
-<pre>FROM busybox
-WORKDIR usr/src/app</pre>
+<pre>FROM debian:latest</pre>
 <h2>Correct code :</h2>
-<pre>FROM busybox
-WORKDIR /usr/src/app</pre>
-<h2>Exceptions :</h2>
-<p>When using environment replacements.
-    <pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-</p>
+<pre>FROM debian:jessie</pre>

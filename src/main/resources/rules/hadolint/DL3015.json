@@ -1,14 +1,14 @@
 {
-    "title": "Use absolute WORKDIR.",
+    "title": "Avoid additional packages by specifying --no-install-recommends.",
+    "defaultSeverity": "MAJOR",
+    "status": "READY",
     "type": "CODE_SMELL",
-    "status": "ready",
     "remediation": {
       "func": "Constant\/Issue",
-      "constantCost": "10min"
+      "constantCost": "15min"
     },
     "tags": [
       "dockerfile",
       "hadolint"
-    ],
-    "defaultSeverity": "Critical"
-  }
+    ]
+}

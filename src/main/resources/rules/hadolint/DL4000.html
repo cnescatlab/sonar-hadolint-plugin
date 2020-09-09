@@ -1,17 +1,9 @@
 <h2>Rationale :</h2>
 <p>
-    By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-    You also often times don't know the <b>WORKDIR</b> context of your base container.
+<b>MAINTAINER</b> is deprecated since Docker 1.13.0 <a href="https://github.com/lukasmartinelli/hadolint/issues/71">https://github.com/lukasmartinelli/hadolint/issues/71</a>.
 </p>
 <h2>Problematic code :</h2>
 <pre>FROM busybox
-WORKDIR usr/src/app</pre>
+MAINTAINER Lukas Martinelli <me@lukasmartinelli.ch></pre>
 <h2>Correct code :</h2>
-<pre>FROM busybox
-WORKDIR /usr/src/app</pre>
-<h2>Exceptions :</h2>
-<p>When using environment replacements.
-    <pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-</p>
+<pre>FROM busybox</pre>

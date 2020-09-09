@@ -1,17 +1,17 @@
 <h2>Rationale :</h2>
 <p>
-    By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-    You also often times don't know the <b>WORKDIR</b> context of your base container.
+As of Alpine Linux 3.3 there exists a new <b>--no-cache</b> option for <b>apk</b>. It allows users to install packages with an index that is updated and used on-the-fly and not cached locally:</br>
+This avoids the need to use <b>--update</b> and remove <b>/var/cache/apk/*</b> when done installing packages.
+<blockquote>inspired by <a href="https://github.com/gliderlabs/docker-alpine/blob/master/docs/usage.md#disabling-cache">https://github.com/gliderlabs/docker-alpine/blob/master/docs/usage.md#disabling-cache</a></blockquote>
 </p>
 <h2>Problematic code :</h2>
-<pre>FROM busybox
-WORKDIR usr/src/app</pre>
+<pre>FROM alpine:3.7
+RUN apk update \
+    && apk add foo=1.0 \
+    && rm -rf /var/cache/apk/*</pre>
+<pre>FROM alpine:3.7
+RUN apk add --update foo=1.0
+    && rm -rf /var/cache/apk/*</pre>
 <h2>Correct code :</h2>
-<pre>FROM busybox
-WORKDIR /usr/src/app</pre>
-<h2>Exceptions :</h2>
-<p>When using environment replacements.
-    <pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-</p>
+<pre>FROM alpine:3.7
+RUN apk --no-cache add foo=1.0</pre>

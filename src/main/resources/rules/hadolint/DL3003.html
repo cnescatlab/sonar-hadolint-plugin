@@ -1,17 +1,12 @@
 <h2>Rationale :</h2>
 <p>
-    By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-    You also often times don't know the <b>WORKDIR</b> context of your base container.
+Only use <b>cd</b> in a subshell. Most commands can work with absolute paths and it in most cases not necessary to change directories. Docker provides the <b>WORKDIR</b> instruction if you really need to change the current working directory.
 </p>
 <h2>Problematic code :</h2>
 <pre>FROM busybox
-WORKDIR usr/src/app</pre>
+RUN cd /usr/src/app && git clone git@github.com:lukasmartinelli/hadolint.git</pre>
 <h2>Correct code :</h2>
 <pre>FROM busybox
-WORKDIR /usr/src/app</pre>
+RUN git clone git@github.com:lukasmartinelli/hadolint.git /usr/src/app</pre>
 <h2>Exceptions :</h2>
-<p>When using environment replacements.
-    <pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-</p>
+<p>When executed in a Subshell.</p>

@@ -1,14 +1,14 @@
 {
-    "title": "Use absolute WORKDIR.",
+    "title": "COPY with more than 2 arguments requires the last argument to end with /",
+    "defaultSeverity": "MAJOR",
+    "status": "READY",
     "type": "CODE_SMELL",
-    "status": "ready",
     "remediation": {
       "func": "Constant\/Issue",
-      "constantCost": "10min"
+      "constantCost": "5min"
     },
     "tags": [
       "dockerfile",
       "hadolint"
-    ],
-    "defaultSeverity": "Critical"
-  }
+    ]
+}

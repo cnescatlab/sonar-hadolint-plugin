@@ -1,7 +1,8 @@
 {
-    "title": "Use absolute WORKDIR.",
+    "title": "Use SHELL to change the default shell",
+    "defaultSeverity": "MAJOR",
+    "status": "READY",
     "type": "CODE_SMELL",
-    "status": "ready",
     "remediation": {
       "func": "Constant\/Issue",
       "constantCost": "10min"
@@ -9,6 +10,5 @@
     "tags": [
       "dockerfile",
       "hadolint"
-    ],
-    "defaultSeverity": "Critical"
-  }
+    ]
+}
