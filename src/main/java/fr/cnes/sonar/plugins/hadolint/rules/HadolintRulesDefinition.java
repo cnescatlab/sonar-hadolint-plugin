@@ -16,13 +16,14 @@
  */
 package fr.cnes.sonar.plugins.hadolint.rules;
 
+import fr.cnes.sonar.plugins.hadolint.rules.HadolintRepository;
 import fr.cnes.sonar.plugins.hadolint.languages.DockerfileLanguage;
 import fr.cnes.sonar.plugins.hadolint.settings.HadolintPluginProperties;
 import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
+import org.sonarsource.analyzer.commons.RuleMetadataLoader;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Specific Hadolint rules definition provided by resource file.
@@ -50,13 +51,20 @@ public class HadolintRulesDefinition implements RulesDefinition {
                 .createRepository(getRepositoryKeyForLanguage(language), language)
                 .setName(getRepositoryName());
 
-		// Get XML file describing rules for language.
-		final InputStream rulesXml = this.getClass().getResourceAsStream(rulesDefinitionFilePath(language));
-		// Add rules in repository.
-		if (rulesXml != null) {
-			final RulesDefinitionXmlLoader rulesLoader = new RulesDefinitionXmlLoader();
-			rulesLoader.load(repository, rulesXml, StandardCharsets.UTF_8.name());
-		}
+		// Create loader for Hadolint & ShellCheck
+		RuleMetadataLoader metadataLoaderHadolint = new RuleMetadataLoader(HadolintPluginProperties.HADOLINT_RULES_DEFINITION_FOLDER);
+		RuleMetadataLoader metadataLoaderShellCheck = new RuleMetadataLoader(HadolintPluginProperties.SHELLCHECK_RULES_DEFINITION_FOLDER);
+
+		// Load rules for Hadolint
+		List<String> keys = new ArrayList<>();
+        HadolintRepository.getHadolintRuleKeys().forEach(keys::add);
+		metadataLoaderHadolint.addRulesByRuleKey(repository, keys);
+
+		// Load rules for ShellCheck
+		keys = new ArrayList<>();
+		HadolintRepository.getShellCheckRuleKeys().forEach(keys::add);
+		metadataLoaderShellCheck.addRulesByRuleKey(repository, keys);
+		
 		repository.done();
 	}
 
@@ -78,21 +86,5 @@ public class HadolintRulesDefinition implements RulesDefinition {
     public static String getRepositoryName() {
         return HadolintPluginProperties.HADOLINT_NAME;
     }
-
-    /**
-     * Getter for the path to rules file.
-     *
-	 * @param language Key of the language.
-     * @return A path in String format.
-     */
-	public String rulesDefinitionFilePath(final String language) {
-		String path = "bad_file";
-
-		if (DockerfileLanguage.KEY.equals(language)) {
-			path = HadolintPluginProperties.PATH_TO_HADOLINT_RULES_XML;
-		}
-
-		return path;
-	}
 }
 

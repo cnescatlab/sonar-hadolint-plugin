@@ -60,6 +60,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.sonarsource.analyzer-commons</groupId>
+            <artifactId>sonar-analyzer-commons</artifactId>
+            <version>1.11.0.541</version>
+        </dependency>
+        <dependency>
             <!-- packaged with the plugin -->
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>

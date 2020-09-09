@@ -1,35 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hadolint-rules>
 	<rule>
-		<key>Hadolint.DL3000</key>
-		<name><![CDATA[Use absolute WORKDIR.]]></name>
-		<description><![CDATA[
-			<h2>Rationale :</h2>
-			<p>
-				By using absolute paths you will not run into problems when a previous <b>WORKDIR</b> instruction changes.<br/>
-				You also often times don't know the <b>WORKDIR</b> context of your base container.
-			</p>
-			<h2>Problematic code :</h2>
-			<pre>FROM busybox
-WORKDIR usr/src/app</pre>
-			<h2>Correct code :</h2>
-			<pre>FROM busybox
-WORKDIR /usr/src/app</pre>
-			<h2>Exceptions :</h2>
-			<p>When using environment replacements.
-				<pre>FROM busybox
-ENV foo /bar
-WORKDIR ${foo}   # WORKDIR /bar</pre>
-			</p>]]>
-		</description>
-		<severity>CRITICAL</severity>
-		<cardinality>SINGLE</cardinality>
-		<status>READY</status>
-		<type>CODE_SMELL</type>
-		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
-		<remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
-	</rule>
-	<rule>
 		<key>Hadolint.DL3001</key>
 		<name><![CDATA[Command does not make sense in a container.]]></name>
 		<description><![CDATA[

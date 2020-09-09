@@ -43,16 +43,21 @@ public class HadolintPluginProperties {
     public static final String HADOLINT_NAME = "Hadolint";
 
     /**
-     * Path to Hadolint rules in XML format
-     */
-    public static final String PATH_TO_HADOLINT_RULES_XML = "/rules/hadolint-rules.xml";
-
-    /**
      * List of know keywords in Dockerfiles
      */
     private static final List<String> DOCKERFILE_KEYWORDS = Arrays.asList("FROM", "RUN", "CMD", "LABEL", "MAINTAINER",
             "EXPOSE", "ENV", "ADD", "COPY", "ENTRYPOINT", "VOLUME", "USER", "WORKDIR", "ARG", "ONBUILD", "STOPSIGNAL",
             "HEALTHCHECK", "SHELL");
+
+    /**
+     * Path to Hadolint rules definition folder
+     */
+    public static final String HADOLINT_RULES_DEFINITION_FOLDER = "rules/hadolint";
+
+    /**
+     * Path to Shellcheck rules definition folder
+     */
+    public static final String SHELLCHECK_RULES_DEFINITION_FOLDER = "rules/shellcheck";
 
     // Whether to use SonarQube Hadolint Plugin
     /**

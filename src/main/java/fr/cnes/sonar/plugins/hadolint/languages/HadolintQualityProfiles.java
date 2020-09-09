@@ -18,6 +18,7 @@ package fr.cnes.sonar.plugins.hadolint.languages;
 
 import java.io.InputStream;
 
+import fr.cnes.sonar.plugins.hadolint.rules.HadolintRepository;
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
 
 import fr.cnes.sonar.plugins.hadolint.model.Rule;
@@ -41,7 +42,7 @@ public final class HadolintQualityProfiles implements BuiltInQualityProfilesDefi
      */
     @Override
     public void define(Context context) {
-        createBuiltInProfile(context, DockerfileLanguage.KEY, HadolintPluginProperties.PATH_TO_HADOLINT_RULES_XML);
+        createBuiltInProfile(context, DockerfileLanguage.KEY, HadolintPluginProperties.HADOLINT_RULES_DEFINITION_FOLDER);
     }
 
     /**
@@ -57,12 +58,8 @@ public final class HadolintQualityProfiles implements BuiltInQualityProfilesDefi
                 context.createBuiltInQualityProfile(HADOLINT_RULES_PROFILE_NAME, language);
 
         // Retrieve all defined rules.
-        final InputStream stream = getClass().getResourceAsStream(path);
-        final RulesDefinition rules = (RulesDefinition) XmlHandler.unmarshal(stream, RulesDefinition.class);
-        // Activate all Hadolint rules.
-        for(final Rule rule : rules.getRules()) {
-            defaultProfile.activateRule(HadolintRulesDefinition.getRepositoryKeyForLanguage(language), rule.getKey());
-        }
+        HadolintRepository.getHadolintRuleKeys().forEach(key -> defaultProfile.activateRule(language, key));
+        HadolintRepository.getShellCheckRuleKeys().forEach(key -> defaultProfile.activateRule(language, key));
 
         // Save the default profile.
         defaultProfile.setDefault(true);
