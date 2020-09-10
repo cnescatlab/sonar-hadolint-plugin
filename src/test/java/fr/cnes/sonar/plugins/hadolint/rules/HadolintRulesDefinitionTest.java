@@ -28,7 +28,7 @@ import org.sonar.api.server.rule.RulesDefinition.Context;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 
 public class HadolintRulesDefinitionTest {	
-	@Test(expected = NoClassDefFoundError.class)
+	@Test(expected = NullPointerException.class)
 	public void testRulesCreation() {
 		Context context = Mockito.mock(Context.class);
 		NewRepository newRepository = Mockito.mock(NewRepository.class);
@@ -36,22 +36,6 @@ public class HadolintRulesDefinitionTest {
 		HadolintRulesDefinition hadolintRulesDefinition = new HadolintRulesDefinition();
 		// Does not work, throws exception about missing lib in SonarQube API
 		hadolintRulesDefinition.define(context);
-	}
-
-	@Test
-	public void testRulesDefinitionFilePath(){
-		HadolintRulesDefinition hadolintRulesDefinition = new HadolintRulesDefinition();
-		String expected = HadolintPluginProperties.PATH_TO_HADOLINT_RULES_XML;
-		String actual = hadolintRulesDefinition.rulesDefinitionFilePath(DockerfileLanguage.KEY);
-		assertEquals(expected, actual);
-	}
-
-	@Test
-	public void testRulesDefinitionFilePathWithWrongName(){
-		HadolintRulesDefinition hadolintRulesDefinition = new HadolintRulesDefinition();
-		String expected = HadolintPluginProperties.PATH_TO_HADOLINT_RULES_XML;
-		String actual = hadolintRulesDefinition.rulesDefinitionFilePath("Wrong parameter");
-		assertNotEquals(expected, actual);
 	}
 
 	@Test
