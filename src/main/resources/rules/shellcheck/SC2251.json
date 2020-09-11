@@ -1,0 +1,14 @@
+{
+  "title": "This ! is not on a condition and skips errexit. Use &amp;&amp; exit 1 instead, or make sure $? is checked.",
+  "type": "CODE_SMELL",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "2min"
+  },
+  "tags": [
+    "shell",
+    "convention"
+  ],
+  "defaultSeverity": "Info"
+}

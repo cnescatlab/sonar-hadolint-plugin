@@ -1,0 +1,14 @@
+{
+  "title": "Prefer escape over ending quote to make $ literal. Instead of 'It costs $'5, use 'It costs \\$5'",
+  "type": "CODE_SMELL",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "2min"
+  },
+  "tags": [
+    "shell",
+    "convention"
+  ],
+  "defaultSeverity": "Info"
+}
