@@ -16,10 +16,8 @@
  */
 package fr.cnes.sonar.plugins.hadolint.rules;
 
-import fr.cnes.sonar.plugins.hadolint.languages.DockerfileLanguage;
 import fr.cnes.sonar.plugins.hadolint.settings.HadolintPluginProperties;
 
-import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
@@ -86,16 +84,6 @@ public class HadolintRepository {
                 LOGGER.error("Unknown error", e);
             }
         }
-    }
-
-    /**
-     * Returns the {@code RuleKey} of the rule identified by its Id as a string
-     *
-     * @param ruleKey a rule key passed as a string
-     * @return a {@code RuleKey} if found or {@code null}
-     */
-    public static RuleKey getRuleKey(String ruleKey) {
-        return RuleKey.of(DockerfileLanguage.KEY, ruleKey);
     }
 
     /**
