@@ -16,7 +16,6 @@
  */
 package fr.cnes.sonar.plugins.hadolint.rules;
 
-import fr.cnes.sonar.plugins.hadolint.rules.HadolintRepository;
 import fr.cnes.sonar.plugins.hadolint.languages.DockerfileLanguage;
 import fr.cnes.sonar.plugins.hadolint.settings.HadolintPluginProperties;
 import org.sonar.api.server.rule.RulesDefinition;
