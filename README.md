@@ -6,7 +6,9 @@ SonarQube is an open platform to manage code quality. This plugin adds the abili
 
 This plugin is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-You can get Hadolint on GitHub : [hadolint](https://github.com/hadolint/hadolint).
+You can get [Hadolint](https://github.com/hadolint/hadolint) on GitHub.
+
+As Hadolint uses [ShellCheck](https://github.com/koalaman/shellcheck) to lint bash code in Dockerfiles, this plugin is inspired by the [Shellcheck SonarQube Plugin](https://github.com/sbaudoin/sonar-shellcheck).
 
 ### Known limitations
 
