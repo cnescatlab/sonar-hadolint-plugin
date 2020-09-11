@@ -1,0 +1,14 @@
+{
+    "title": "Multiple CMD instructions found. If you list more than one CMD then only the last CMD will take effect.",
+    "defaultSeverity": "MINOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "10min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

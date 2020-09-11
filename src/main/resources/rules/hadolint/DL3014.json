@@ -1,0 +1,14 @@
+{
+    "title": "Use the -y switch.",
+    "defaultSeverity": "BLOCKER",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

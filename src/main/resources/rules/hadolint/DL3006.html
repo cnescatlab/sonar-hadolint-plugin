@@ -1,0 +1,18 @@
+<h2>Rationale :</h2>
+<p>
+You can never rely that the <b>latest</b> tags is a specific version.
+<a href="https://docs.docker.com/engine/userguide/dockerimages/">https://docs.docker.com/engine/userguide/dockerimages/</a>
+<blockquote>Tip: You recommend you always use a specific tagged image, for example ubuntu:12.04. That way you always know exactly what variant of an image is being used.</blockquote>
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM debian</pre>
+<h2>Correct code :</h2>
+<pre>FROM debian:jessie</pre>
+<h2>Exceptions :</h2>
+<p>When the image name refers to a previously defined alias:</p>
+<pre>FROM debian:jessie as build
+RUN build_script
+FROM build as tests
+RUN test_script
+FROM debian:jessie
+COPY --from=build foo .</pre>

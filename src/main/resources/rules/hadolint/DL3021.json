@@ -1,0 +1,14 @@
+{
+    "title": "COPY with more than 2 arguments requires the last argument to end with /",
+    "defaultSeverity": "MAJOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

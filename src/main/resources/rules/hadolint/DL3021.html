@@ -1,0 +1,12 @@
+<h2>Rationale :</h2>
+<p>
+<a href="https://docs.docker.com/engine/reference/builder/#copy">https://docs.docker.com/engine/reference/builder/#copy</a>
+<blockquote>If multiple resources are specified, either directly or due to the use of a wildcard, then must be a directory, and it must end with a slash /</blockquote>
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM node:carbon
+COPY package.json yarn.lock my_app</pre>
+<h2>Correct code :</h2>
+<pre>FROM node:carbon
+COPY package.json yarn.lock my_app/</pre>
+

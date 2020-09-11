@@ -1,0 +1,12 @@
+<h2>Rationale :</h2>
+<p>
+Don't install two tools that have the same effect and avoid the additional cruft.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM debian
+RUN wget http://google.com
+RUN curl http://bing.com</pre>
+<h2>Correct code :</h2>
+<pre>FROM debian
+RUN curl http://google.com
+RUN curl http://bing.com</pre>

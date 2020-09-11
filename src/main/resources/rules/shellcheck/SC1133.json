@@ -1,0 +1,14 @@
+{
+  "title": "Unexpected start of line. If breaking lines, |\/||\/&amp;&amp; should be at the end of the previous one.",
+  "type": "CODE_SMELL",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "2min"
+  },
+  "tags": [
+    "shell",
+    "convention"
+  ],
+  "defaultSeverity": "Blocker"
+}

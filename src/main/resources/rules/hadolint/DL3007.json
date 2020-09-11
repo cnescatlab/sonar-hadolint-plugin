@@ -1,0 +1,14 @@
+{
+    "title": "Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag.",
+    "defaultSeverity": "CRITICAL",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

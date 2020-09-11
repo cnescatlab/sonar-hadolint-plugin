@@ -1,0 +1,9 @@
+<h2>Rationale :</h2>
+<p>
+<b>MAINTAINER</b> is deprecated since Docker 1.13.0 <a href="https://github.com/lukasmartinelli/hadolint/issues/71">https://github.com/lukasmartinelli/hadolint/issues/71</a>.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+MAINTAINER Lukas Martinelli <me@lukasmartinelli.ch></pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox</pre>

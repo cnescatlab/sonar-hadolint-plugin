@@ -1,0 +1,14 @@
+{
+    "title": "Multiple ENTRYPOINT instructions found. If you list more than one ENTRYPOINT then only the last ENTRYPOINT will take effect.",
+    "defaultSeverity": "MINOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "10min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

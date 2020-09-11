@@ -1,0 +1,14 @@
+{
+  "title": "echo doesn't read from stdin, are you sure you should be piping to it?",
+  "type": "CODE_SMELL",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "2min"
+  },
+  "tags": [
+    "shell",
+    "convention"
+  ],
+  "defaultSeverity": "Major"
+}

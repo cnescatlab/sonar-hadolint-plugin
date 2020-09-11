@@ -1,0 +1,14 @@
+{
+    "title": "Use only an allowed registry in the FROM image",
+    "defaultSeverity": "MAJOR",
+    "status": "READY",
+    "type": "VULNERABILITY",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "30min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

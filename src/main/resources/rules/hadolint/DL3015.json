@@ -1,0 +1,14 @@
+{
+    "title": "Avoid additional packages by specifying --no-install-recommends.",
+    "defaultSeverity": "MAJOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "15min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

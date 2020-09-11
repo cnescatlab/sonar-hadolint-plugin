@@ -1,0 +1,16 @@
+<h2>Rationale :</h2>
+<p>
+Docker provides a <a href="https://docs.docker.com/engine/reference/builder/#/shell"><b>SHELL</b> instruction</a> which does not require overwriting <b>/bin/sh</b>	 in your container.	
+</p>
+<h2>Problematic code :</h2>
+<pre># Install bash
+RUN apk add --update-cache bash=4.3.42-r3
+
+# Use bash as the default shell
+RUN ln -sfv /bin/bash /bin/sh</pre>
+<h2>Correct code :</h2>
+<pre># Install bash
+RUN apk add --update-cache bash=4.3.42-r3
+
+# Use bash as the default shell
+SHELL ["/bin/bash", "-c"]</pre>

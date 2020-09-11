@@ -1,0 +1,14 @@
+{
+    "title": "Use COPY instead of ADD for files and folders",
+    "defaultSeverity": "MINOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

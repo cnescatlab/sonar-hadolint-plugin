@@ -1,0 +1,10 @@
+<h2>Rationale :</h2>
+<p>
+Do not use sudo as it leads to unpredictable behavior. Use a tool like gosu to enforce root.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+RUN sudo apt-get install</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox
+RUN apt-get install</pre>

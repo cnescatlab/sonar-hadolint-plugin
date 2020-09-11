@@ -1,0 +1,11 @@
+<h2>Rationale :</h2>
+<p>
+<a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#apt-get">https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#apt-get</a>
+<blockquote>Version pinning forces the build to retrieve a particular version regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.</blockquote>
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+RUN apt-get install python</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox
+RUN apt-get install python=2.7</pre>

@@ -1,0 +1,14 @@
+{
+    "title": "Set the SHELL option -o pipefail before RUN with a pipe in",
+    "defaultSeverity": "CRITICAL",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "15min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

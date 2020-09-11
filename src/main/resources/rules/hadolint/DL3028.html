@@ -1,0 +1,9 @@
+<h2>Rationale :</h2>
+<a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a>
+<blockquote>Version pinning forces the build to retrieve a particular version regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.</blockquote>
+<h2>Problematic code :</h2>
+<pre>FROM ruby:2
+RUN gem install bundler</pre>
+<h2>Correct code :</h2>
+<pre>FROM ruby:2
+RUN gem install bundler:1.1</pre>

@@ -1,0 +1,14 @@
+{
+    "title": "FROM aliases (stage names) must be unique",
+    "defaultSeverity": "BLOCKER",
+    "status": "READY",
+    "type": "BUG",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

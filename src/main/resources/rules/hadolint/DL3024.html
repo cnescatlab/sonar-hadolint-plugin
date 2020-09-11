@@ -1,0 +1,14 @@
+<h2>Rationale :</h2>
+<p>
+Defining duplicate stage names results in an error.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM debian:jesse as build
+RUN stuff
+FROM debian:jesse as build
+RUN more_stuff</pre>
+<h2>Correct code :</h2>
+<pre>FROM debian:jesse as build
+RUN stuff
+FROM debian:jesse as another-alias
+RUN more_stuff</pre>

@@ -1,0 +1,14 @@
+{
+  "title": "[ ] does not apply arithmetic evaluation. Evaluate with $((..)) for numbers, or use string comparator for strings.",
+  "type": "CODE_SMELL",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "2min"
+  },
+  "tags": [
+    "shell",
+    "convention"
+  ],
+  "defaultSeverity": "Blocker"
+}

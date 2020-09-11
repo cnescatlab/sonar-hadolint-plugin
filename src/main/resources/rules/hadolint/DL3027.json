@@ -1,0 +1,14 @@
+{
+    "title": "Do not use apt as it is meant to be an end-user tool, use apt-get or apt-cache instead.",
+    "defaultSeverity": "MINOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "10min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

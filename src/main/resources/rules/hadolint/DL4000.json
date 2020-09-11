@@ -1,0 +1,14 @@
+{
+    "title": "MAINTAINER is deprecated",
+    "defaultSeverity": "MINOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

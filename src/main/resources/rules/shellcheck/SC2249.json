@@ -1,0 +1,14 @@
+{
+  "title": "Consider adding a default *) case, even if it just exits with error.",
+  "type": "CODE_SMELL",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "2min"
+  },
+  "tags": [
+    "shell",
+    "convention"
+  ],
+  "defaultSeverity": "Info"
+}

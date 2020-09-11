@@ -1,0 +1,10 @@
+<h2>Rationale :</h2>
+<p>
+Avoid installing additional packages that you did not explicitly want.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+RUN apt-get install -y python=2.7</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox
+RUN apt-get install -y --no-install-recommends python=2.7</pre>

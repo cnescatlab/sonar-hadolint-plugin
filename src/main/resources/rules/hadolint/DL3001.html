@@ -1,0 +1,9 @@
+<h2>Rationale :</h2>
+<p>
+For some POSIX commands it makes no sense to run them in a Docker container because they are bound to the host or are otherwise dangerous (like ´shutdown´, ´service´, ´ps´, ´free´, ´top´, ´kill´, ´mount´, ´ifconfig´). Interactive utilities also don't make much sense (´nano´, ´vim´).
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+RUN top</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox</pre>

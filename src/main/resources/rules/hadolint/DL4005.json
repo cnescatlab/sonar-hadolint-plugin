@@ -1,0 +1,14 @@
+{
+    "title": "Use SHELL to change the default shell",
+    "defaultSeverity": "MAJOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "10min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

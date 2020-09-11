@@ -1,0 +1,14 @@
+{
+    "title": "Valid UNIX ports range from 0 to 65535.",
+    "defaultSeverity": "BLOCKER",
+    "status": "READY",
+    "type": "BUG",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "10min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

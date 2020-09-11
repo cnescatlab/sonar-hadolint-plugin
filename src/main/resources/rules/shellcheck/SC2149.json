@@ -1,0 +1,14 @@
+{
+  "title": "Remove $\/${} for numeric index, or escape it for string.",
+  "type": "CODE_SMELL",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "2min"
+  },
+  "tags": [
+    "shell",
+    "convention"
+  ],
+  "defaultSeverity": "Major"
+}

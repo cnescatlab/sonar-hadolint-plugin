@@ -1,0 +1,13 @@
+<h2>Rationale :</h2>
+<p>
+<a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#add-or-copy">https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#add-or-copy</a>
+<blockquote>For other items (files, directories) that do not require ADD’s tar auto-extraction capability, you should always use COPY.</blockquote>
+Rule also implemented in <a href="https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee">https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee</a>
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM python:3.4
+ADD requirements.txt /usr/src/app/*</pre>
+<h2>Correct code :</h2>
+<pre>FROM python:3.4
+COPY requirements.txt /usr/src/app/</pre>
+

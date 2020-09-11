@@ -1,0 +1,14 @@
+{
+    "title": "Last user should not be root.",
+    "defaultSeverity": "CRITICAL",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "30min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

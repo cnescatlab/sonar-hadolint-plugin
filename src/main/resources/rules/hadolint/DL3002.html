@@ -1,0 +1,13 @@
+<h2>Rationale :</h2>
+<p>
+Switching to the root <b>USER</b> opens up certain security risks if an attacker gets access to the container. In order to mitigate this, switch back to a non privileged user after running the commands you need as root.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+USER root
+RUN ...</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox
+USER root
+RUN ...
+USER guest</pre>

@@ -1,0 +1,14 @@
+<h2>Rationale :</h2>
+<p>
+Trying to copy from a missing image alias results in an error.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM debian:jesse
+RUN stuff
+FROM debian:jesse
+COPY --from=build some stuff ./</pre>
+<h2>Correct code :</h2>
+<pre>FROM debian:jesse as build
+RUN stuff
+FROM debian:jesse
+COPY --from=build some stuff ./</pre>

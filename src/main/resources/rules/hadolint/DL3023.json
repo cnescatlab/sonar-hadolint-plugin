@@ -1,0 +1,14 @@
+{
+    "title": "COPY --from cannot reference its own FROM alias",
+    "defaultSeverity": "BLOCKER",
+    "status": "READY",
+    "type": "BUG",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

@@ -1,0 +1,11 @@
+<h2>Rationale :</h2>
+<p>
+Rule also implemented in <a href="https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee">https://github.com/RedCoolBeans/dockerlint/blob/master/src/checks.coffee</a>.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+CMD /bin/true
+CMD /bin/false</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox
+CMD /bin/false</pre>
