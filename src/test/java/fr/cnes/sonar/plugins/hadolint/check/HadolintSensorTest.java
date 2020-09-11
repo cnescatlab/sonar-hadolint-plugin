@@ -164,7 +164,7 @@ public class HadolintSensorTest {
         // Simulate active rule
         ActiveRules rules = Mockito.mock(ActiveRules.class);
         ActiveRule rule = Mockito.mock(ActiveRule.class);
-        Mockito.when(rules.find(RuleKey.of(DockerfileLanguage.KEY, "Hadolint.DL3000"))).thenReturn(rule);
+        Mockito.when(rules.find(RuleKey.of(DockerfileLanguage.KEY, "DL3000"))).thenReturn(rule);
         context.setActiveRules(rules);
 
 		final HadolintSensor sensor = new HadolintSensor();

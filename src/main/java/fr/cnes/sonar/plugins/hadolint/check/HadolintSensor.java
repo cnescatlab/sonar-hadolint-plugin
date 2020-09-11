@@ -120,12 +120,12 @@ public class HadolintSensor implements Sensor {
                 for (final CheckstyleFile checkstyleFile : checkstyleReport.getCheckstyleFiles()) {
                     for(final CheckstyleError checkstyleError : checkstyleFile.getChecktyleErrors()) {
 
-                        if (isRuleActive(activeRules, formatRuleID(checkstyleError.getSource()))) { // manage active rules
+                        if (isRuleActive(activeRules, checkstyleError.getSource())) { // manage active rules
                             saveIssue(sensorContext, scannedFiles, checkstyleError, checkstyleFile);
                         } else { // log ignored data
                             LOGGER.info(String.format(
                                     "An issue for rule '%s' was detected by Hadolint but this rule is deactivated in current analysis.",
-                                    formatRuleID(checkstyleError.getSource())));
+                                    checkstyleError.getSource()));
                         }
                     }
                 }
@@ -152,7 +152,7 @@ public class HadolintSensor implements Sensor {
         if(inputFile!=null) {
             // Retrieve the ruleKey if it exists.
             final RuleKey ruleKey = RuleKey.of(HadolintRulesDefinition.getRepositoryKeyForLanguage(DockerfileLanguage.KEY), 
-                    formatRuleID(issue.getSource()));
+                    issue.getSource());
 
             // Create a new issue for SonarQube, but it must be saved using NewIssue.save().
             final NewIssue newIssue = context.newIssue();
@@ -276,16 +276,6 @@ public class HadolintSensor implements Sensor {
         final RuleKey ruleKeyDockerfile = RuleKey
                 .of(HadolintRulesDefinition.getRepositoryKeyForLanguage(DockerfileLanguage.KEY), rule);
         return activeRules.find(ruleKeyDockerfile) != null;
-    }
-
-    /**
-     * Format the retrieved rule ID in order to match SonarQube's name.
-     *
-     * @param rule Rule ID to fromat
-     * @return The correctly formatted rule ID.
-     */
-    private static String formatRuleID(final String rule) {
-        return HadolintPluginProperties.HADOLINT_NAME + "." + rule;
     }
 }
 
