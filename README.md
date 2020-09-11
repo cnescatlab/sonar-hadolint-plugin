@@ -1,4 +1,9 @@
 # [WIP] Hadolint SonarQube Plugin
+[![Build Status](https://travis-ci.org/cnescatlab/sonar-hadolint-plugin.svg?branch=dev)](https://travis-ci.org/cnescatlab/sonar-hadolint-plugin)
+[![SonarQUbe Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin)
+[![SonarQube Bugs](https://sonarcloud.io/api/project_badges/measure?project=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin&metric=bugs)](https://sonarcloud.io/dashboard?id=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin)
+[![SonarQube Coverage](https://sonarcloud.io/api/project_badges/measure?project=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin&metric=coverage)](https://sonarcloud.io/dashboard?id=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin)
+[![SonarQube Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin&metric=sqale_index)](https://sonarcloud.io/component_measures?id=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin&metric=Maintainability)
 
 SonarQube plugin for the Dockerfile analysis tool Hadolint.
 
