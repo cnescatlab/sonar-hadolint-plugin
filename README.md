@@ -23,24 +23,16 @@ SonarQube plugins can automatically identified whether they should run, thanks t
 For example, a java plugin can easily identify the files it should analyze, with the .java extension.  
 We can't use this behaviour for Dockerfiles to know if the plugin should run, because they have no standardized extension.  
 
-As of now, we did not find a way to force SonarQube to automatically recognize a file without extension, so we have to use SonarQube plugin properties to :  
-  
-- explicitly tell if the plugin must run, to prevent it from running everytime, even when it's not needed  
-- indicates where to find the files to analyze, so we can find the files we have to work on  
+There is no way SonarQube can automatically recognize a Dockerfile without declaring an extension inside the plugin.  
+However, the solution we found is to explicitly give the Sonar Scanner some patterns to find Dockerfiles, when starting an analysis.  
+This way, the plugin will only run if the patterns match at least one file, and Dockerfiles can be fully analyzed.
 
 More details regarding properties are available in the dedicated section below.
 
-#### A Dockerfile has no file extension (again)
-
-To create this plugin, we had to define a "Dockerfile" language so that we can create rules linked to it.  
-As we creates functions to parse Hadolint reports and create issues/metrics on Dockefiles, SonarQube is able to upload them and show the results on its web interface.  
-The other side effect Dockerfiles ahaving no extension is that SonarQube is not able to identify the Dockerfiles from being coded in the "Dockerfile" language.  
-They are linked to an "Unknown" language, and we did not find a workaround yet.  
-
-#### Language, Metrics and Highlighting
+### Language, Metrics and Highlighting
 
 The plugin creates a `Dockerfile` language inside SonarQube, linked to Hadolint rules.    
-For identified Dockerfiles in your projects, the plugin calculates two metrics : number of comments, and number of line of code  
+For identified Dockerfiles in your projects, the plugin calculates two metrics : number of comments, and number of lines of code.  
 It also provides a basic text highlighting when you check the code on SonarQube web interface.  
 
 ### Quickstart
@@ -59,9 +51,16 @@ Go to the project page to find indications : https://github.com/hadolint/hadolin
 **Be sure to generate reports in checkstyle format !** It is the only one the plugin supports.
 
 #### Plugin's properties
-- `sonar.hadolint.activated`: Boolean indicating whether the plugin should run. Default: `false`.
-- `sonar.hadolint.reports.path`: Comma separated list of path to Hadolint reports in checkstyle format. Default: `hadolint-report.xml`.
-- `sonar.hadolint.dockerfiles.path`: Comma separated list of path to Dockerfiles analyzed by Hadolint. Default: `Dockerfile`.
+- `sonar.lang.patterns.dockerfile`: 
+  - Comma separated list of patterns matching Dockerfiles inside your project.  
+  - This property **MUST** be defined if you want the plugin to work.  
+  - **/!\\** _Those patterns must match Dockerfiles only ! You will have issues if they match another analyzed language._
+- `sonar.hadolint.reports.path`: 
+  - Comma separated list of path to Hadolint reports in checkstyle format.
+  - Default: `hadolint-report.xml`.
+
+These properties can be defined in a `sonar-project.properties` files, or as command line arguments when you start the Sonar Scanner :  
+`sonar-scanner -Dsonar.lang.patterns.dockerfile=Dockerfile,some-dir/Dockerfile.* -Dsonar.hadolint.reports.path=results/report.xml`  
 
 ### Compatibility Matrix
 
