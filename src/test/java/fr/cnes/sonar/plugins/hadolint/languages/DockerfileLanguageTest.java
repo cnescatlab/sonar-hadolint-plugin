@@ -25,7 +25,6 @@ public class DockerfileLanguageTest {
     @Test
 	public void testGetFileSuffixes() {
 		DockerfileLanguage language = new DockerfileLanguage();
-		String[] expected = new String[]{};
 		assertEquals(1, language.getFileSuffixes().length);
 	}
 
