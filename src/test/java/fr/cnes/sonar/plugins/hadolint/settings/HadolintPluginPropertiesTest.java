@@ -36,16 +36,8 @@ public class HadolintPluginPropertiesTest {
     @Test
     public void testPluginPropertiesDefinition() {
         List<PropertyDefinition> actual = HadolintPluginProperties.getProperties();
-        assertEquals(3, actual.size());
-        PropertyDefinition activated = actual.get(0);
-        Assert.assertEquals(HadolintPluginProperties.HADOLINT_NAME, activated.category());
-        assertEquals(HadolintPluginProperties.ACTIVATED_KEY, activated.key());
-        assertEquals(HadolintPluginProperties.ACTIVATED_DEFAULT, activated.defaultValue());
-        PropertyDefinition dockerfilesPath = actual.get(1);
-        assertEquals(HadolintPluginProperties.HADOLINT_NAME, dockerfilesPath.category());
-        assertEquals(HadolintPluginProperties.DOCKERFILES_PATH_KEY, dockerfilesPath.key());
-        assertEquals(HadolintPluginProperties.DOCKERFILES_PATH_DEFAULT, dockerfilesPath.defaultValue());
-        PropertyDefinition reportsPath = actual.get(2);
+        assertEquals(1, actual.size());
+        PropertyDefinition reportsPath = actual.get(0);
         assertEquals(HadolintPluginProperties.HADOLINT_NAME, reportsPath.category());
         assertEquals(HadolintPluginProperties.REPORT_PATH_KEY, reportsPath.key());
         assertEquals(HadolintPluginProperties.REPORT_PATH_DEFAULT, reportsPath.defaultValue());
