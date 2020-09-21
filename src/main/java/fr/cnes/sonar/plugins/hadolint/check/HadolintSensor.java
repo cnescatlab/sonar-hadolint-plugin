@@ -57,6 +57,11 @@ public class HadolintSensor implements Sensor {
     private static final Logger LOGGER = Loggers.get(HadolintSensor.class);
 
     /**
+     * Sonar Scanner property used to list Dockerfile patterns
+     */
+    private static final String DOCKERFILE_PATTERNS = "sonar.lang.patterns." + DockerfileLanguage.KEY;
+
+    /**
      * Give information about this sensor.
      *
      * @param sensorDescriptor Descriptor injected to set the sensor.
@@ -72,6 +77,9 @@ public class HadolintSensor implements Sensor {
         // This sensor is activated only if a rule from the following repo is activated.
         sensorDescriptor.createIssuesForRuleRepositories(
                 HadolintRulesDefinition.getRepositoryKeyForLanguage(DockerfileLanguage.KEY));
+
+        // Prevents sensor to be run when no Dockerfiles found.
+        sensorDescriptor.onlyOnLanguages(DockerfileLanguage.KEY);
     }
 
     /**
@@ -85,12 +93,6 @@ public class HadolintSensor implements Sensor {
         // Represent the configuration used for the analysis.
         final Configuration config = sensorContext.config();
 
-        // If the plugin is not manually activated, the analysis is not executed.
-        // This is because Dockerfiles have no extensions, so SonarQube is not able to identify them by itself.
-        if (! config.getBoolean(HadolintPluginProperties.ACTIVATED_KEY).orElse(Boolean.getBoolean(HadolintPluginProperties.ACTIVATED_DEFAULT))) {
-            return;
-        }
-
         // Represent the file system used for the analysis.
         final FileSystem fileSystem = sensorContext.fileSystem();
         // Represent the active rules used for the analysis.
@@ -99,12 +101,15 @@ public class HadolintSensor implements Sensor {
         // Report files found in file system and corresponding to SQ property.
         final List<String> reportFiles = getReportFiles(config, fileSystem);
 
+        // List of Dockerfile found using given patterns
+        final List<InputFile> dockerfiles = getDockerfiles(config, fileSystem);
+
         // Generates metrics on each Dockerfile
-        DockerfileMetrics metrics = new DockerfileMetrics(sensorContext, getDockerfiles(config, fileSystem));
+        DockerfileMetrics metrics = new DockerfileMetrics(sensorContext, dockerfiles);
         metrics.analyse();
 
         // Generates highlighting on each Dockerfile
-        DockerfileHighlighting highlighting = new DockerfileHighlighting(sensorContext, getDockerfiles(config, fileSystem));
+        DockerfileHighlighting highlighting = new DockerfileHighlighting(sensorContext, dockerfiles);
         highlighting.highlight();
 
         // If exists, unmarshal each xml result file.
@@ -174,7 +179,7 @@ public class HadolintSensor implements Sensor {
     }
 
     /**
-     * Construct a map with all found source files.
+     * Construct a map with all source files mentionned in Hadolint report.
      *
      * @param fileSystem       The file system on which the analysis is running.
      * @param checkstyleReport The checkstyle report
@@ -194,7 +199,7 @@ public class HadolintSensor implements Sensor {
             if (inputFile != null) {
                 result.put(file.getName(), inputFile);
             } else {
-                LOGGER.error(String.format("The source file '%s' was not found.", file.getName()));
+                LOGGER.error(String.format("The source file '%s' mentionned in Hadolint report was not found.", file.getName()));
             }
         }
 
@@ -202,7 +207,7 @@ public class HadolintSensor implements Sensor {
     }
 
     /**
-     * Returns a list of analyzed Dockerfiles' path.
+     * Returns a list of identified Dockerfiles to analyze
      *
      * @param config     Configuration of the analysis where properties are put.
      * @param fileSystem The current file system.
@@ -213,24 +218,14 @@ public class HadolintSensor implements Sensor {
         final List<InputFile> result = new ArrayList<>();
 
         // Retrieves the non-verified path list from the SonarQube property.
-        final String[] pathArray = config.getStringArray(HadolintPluginProperties.DOCKERFILES_PATH_KEY);
+        final String[] patterns = config.getStringArray(DOCKERFILE_PATTERNS);
 
-        // Check if each path is known by the file system and add it to the processable
-        // path list,
-        // otherwise print a warning and ignore this result file.
-        FilePredicate predicate;
-        InputFile inputFile;
+        // For each pattern given with the previous property
+        // Get all corresponding files
+        FilePredicate predicate = fileSystem.predicates().matchesPathPatterns(patterns);
+        fileSystem.inputFiles(predicate).forEach(result::add);
 
-        for (String path : pathArray) {
-            predicate = fileSystem.predicates().hasPath(path);
-            inputFile = fileSystem.inputFile(predicate);
-
-            if (inputFile != null) {
-                result.add(inputFile);
-            } else {
-                LOGGER.error(String.format("The source file '%s' was not found.", path));
-            }
-        }
+        LOGGER.info(String.format("%d Dockerfile found using given patterns : %s", result.size(), String.join(", ", patterns)));
 
         return result;
     }

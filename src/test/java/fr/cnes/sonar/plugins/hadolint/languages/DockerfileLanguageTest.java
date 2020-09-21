@@ -18,7 +18,6 @@ package fr.cnes.sonar.plugins.hadolint.languages;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -26,8 +25,7 @@ public class DockerfileLanguageTest {
     @Test
 	public void testGetFileSuffixes() {
 		DockerfileLanguage language = new DockerfileLanguage();
-		String[] expected = new String[]{};
-		assertArrayEquals(expected, language.getFileSuffixes());
+		assertEquals(1, language.getFileSuffixes().length);
 	}
 
 	@Test

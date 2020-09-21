@@ -25,7 +25,7 @@ public final class DockerfileLanguage extends AbstractLanguage {
 
 	public static final String KEY = "dockerfile";
 	public static final String NAME = "Dockerfile";
-	public static final String[] INTERPRETERS = {};
+	private static final String[] INTERPRETERS = { ".fakedockerextension" };
 
 	/**
 	 * DockerfileCheck extension
