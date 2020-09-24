@@ -36,6 +36,6 @@ public class HadolintPluginTest {
 		SonarRuntime runtime = SonarRuntimeImpl.forSonarQube(VERSION_7_9, SonarQubeSide.SERVER, SonarEdition.COMMUNITY);
 		Plugin.Context context = new Plugin.Context(runtime);
 		hadolintPlugin.define(context);
-		Assert.assertEquals(5, context.getExtensions().size());
+		Assert.assertEquals(6, context.getExtensions().size());
 	}    
 }
