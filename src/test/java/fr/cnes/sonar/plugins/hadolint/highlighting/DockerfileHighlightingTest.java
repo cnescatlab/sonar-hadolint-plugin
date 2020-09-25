@@ -17,6 +17,11 @@
 
 package fr.cnes.sonar.plugins.hadolint.highlighting;
 
+import fr.cnes.sonar.plugins.hadolint.lexer.DockerfileToken;
+import fr.cnes.sonar.plugins.hadolint.lexer.DockerfileTokenType;
+
+import com.sonar.sslr.api.Token;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -27,10 +32,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URI;
 
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
+import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -43,16 +51,34 @@ import org.sonar.api.batch.sensor.highlighting.TypeOfText;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DockerfileHighlightingTest {
-    @Captor
-    ArgumentCaptor<Integer> startLineCaptor;
-    @Captor
-    ArgumentCaptor<Integer> startLineOffsetCaptor;
-    @Captor
-    ArgumentCaptor<Integer> endLineCaptor;
-    @Captor
-    ArgumentCaptor<Integer> endLineOffsetCaptor;
-    @Captor
-    ArgumentCaptor<TypeOfText> typeOfTextCaptor;
+
+    private SensorContextTester sensorContext;
+    private DefaultInputFile testFile;
+
+    /** 
+     * 
+    */
+    private DockerfileToken createToken(URI uri, DockerfileTokenType type, int line, int column, String value) {
+        Token tmpToken = Token.builder()
+          .setURI(uri)
+          .setType(type)
+          .setLine(line)
+          .setColumn(column)
+          .setValueAndOriginalValue(value)
+          .build();
+
+        return new DockerfileToken(tmpToken);
+    }
+
+    /**
+     * 
+     */
+    private void assertHighlighting(int line, int column, int length, TypeOfText type) {
+        for (int i = column; i < column + length; i++) {
+            List<TypeOfText> typeOfTexts = sensorContext.highlightingTypeAt(testFile.key(), line, i);
+            assertThat(typeOfTexts).containsOnly(type);
+        }
+    }
 
     @Test
     public void testMetricsAreAllGood() throws IOException {
@@ -60,117 +86,39 @@ public class DockerfileHighlightingTest {
         // Set up InputFile to create highlightings on
         String testFileDir = DockerfileHighlightingTest.class.getClassLoader().getResource("project").getFile();
         String testFilePath = testFileDir + "/Dockerfile_highlight";
-        DefaultInputFile testFile = TestInputFileBuilder
+        testFile = TestInputFileBuilder
             .create("ProjectKey", new File(testFileDir), new File(testFilePath))
             .setLanguage("Dockerfile")
             .setContents(new String(Files.readAllBytes(Paths.get(testFilePath))))
-            .initMetadata("public class Foo {\n}").build();
-        
-        List<InputFile> inputFiles = new ArrayList<>();
-        inputFiles.add(testFile);       
+            .build();
 
-        // Set up highlighting mock
-        SensorContext context = Mockito.mock(SensorContext.class);
-        NewHighlighting newHighlighting = Mockito.mock(NewHighlighting.class);
-        Mockito.when(context.newHighlighting()).thenReturn(newHighlighting);
+        // Set up context
+        sensorContext = SensorContextTester.create(new File(testFileDir));
+        sensorContext.fileSystem().add(testFile);
+
+        // Generate a list of token
+        List<DockerfileToken> tokenList = new ArrayList();
+        URI testFileUri = testFile.path().toUri();
+        tokenList.add(createToken(testFileUri, DockerfileTokenType.COMMENT, 1, 0, "# from base image node"));
+        tokenList.add(createToken(testFileUri, DockerfileTokenType.KEYWORD, 2, 0, "FROM"));
+        tokenList.add(createToken(testFileUri, DockerfileTokenType.KEYWORD, 4, 0, "WORKDIR"));
+        tokenList.add(createToken(testFileUri, DockerfileTokenType.KEYWORD, 5, 0, "WORKDIR"));
+        tokenList.add(createToken(testFileUri, DockerfileTokenType.KEYWORD, 7, 0, "RUN"));
+        tokenList.add(createToken(testFileUri, DockerfileTokenType.COMMENT, 9, 0, "# command executable and version"));
+        tokenList.add(createToken(testFileUri, DockerfileTokenType.KEYWORD, 10, 0, "ENTRYPOINT"));
+        tokenList.add(createToken(testFileUri, DockerfileTokenType.STRING, 10, 12, "\"node\""));
 
         // Generate highlightings
-        DockerfileHighlighting highlighting = new DockerfileHighlighting(context, inputFiles);
-        highlighting.highlight();
-
-        // Capture calls to highlight, then check method is called with right parameters
-        Mockito.verify(newHighlighting, times(9)).highlight(
-            startLineCaptor.capture(), 
-            startLineOffsetCaptor.capture(), 
-            endLineCaptor.capture(), 
-            endLineOffsetCaptor.capture(), 
-            typeOfTextCaptor.capture());
+        DockerfileHighlighting.saveHighlight(sensorContext, testFile, tokenList);
         
-        //Verify startLine parameter values
-        assertEquals(1, startLineCaptor.getAllValues().get(0).intValue());
-        assertEquals(2, startLineCaptor.getAllValues().get(1).intValue());
-        assertEquals(4, startLineCaptor.getAllValues().get(2).intValue());
-        assertEquals(5, startLineCaptor.getAllValues().get(3).intValue());
-        assertEquals(7, startLineCaptor.getAllValues().get(4).intValue());
-        assertEquals(9, startLineCaptor.getAllValues().get(5).intValue());
-        assertEquals(10, startLineCaptor.getAllValues().get(6).intValue());
-        assertEquals(10, startLineCaptor.getAllValues().get(7).intValue());
-        assertEquals(10, startLineCaptor.getAllValues().get(8).intValue());
-
-        //Verify startLineOffset parameter values
-        assertEquals(0, startLineOffsetCaptor.getAllValues().get(0).intValue());
-        assertEquals(0, startLineOffsetCaptor.getAllValues().get(1).intValue());
-        assertEquals(0, startLineOffsetCaptor.getAllValues().get(2).intValue());
-        assertEquals(0, startLineOffsetCaptor.getAllValues().get(3).intValue());
-        assertEquals(0, startLineOffsetCaptor.getAllValues().get(4).intValue());
-        assertEquals(0, startLineOffsetCaptor.getAllValues().get(5).intValue());
-        assertEquals(0, startLineOffsetCaptor.getAllValues().get(6).intValue());
-        assertEquals(12, startLineOffsetCaptor.getAllValues().get(7).intValue());
-        assertEquals(20, startLineOffsetCaptor.getAllValues().get(8).intValue());
-
-        //Verify endLine parameter values
-        assertEquals(1, endLineCaptor.getAllValues().get(0).intValue());
-        assertEquals(2, endLineCaptor.getAllValues().get(1).intValue());
-        assertEquals(4, endLineCaptor.getAllValues().get(2).intValue());
-        assertEquals(5, endLineCaptor.getAllValues().get(3).intValue());
-        assertEquals(7, endLineCaptor.getAllValues().get(4).intValue());
-        assertEquals(9, endLineCaptor.getAllValues().get(5).intValue());
-        assertEquals(10, endLineCaptor.getAllValues().get(6).intValue());
-        assertEquals(10, endLineCaptor.getAllValues().get(7).intValue());
-        assertEquals(10, endLineCaptor.getAllValues().get(8).intValue());
-
-        //Verify endLineOffset parameter values
-        assertEquals(22, endLineOffsetCaptor.getAllValues().get(0).intValue());
-        assertEquals(4, endLineOffsetCaptor.getAllValues().get(1).intValue());
-        assertEquals(7, endLineOffsetCaptor.getAllValues().get(2).intValue());
-        assertEquals(7, endLineOffsetCaptor.getAllValues().get(3).intValue());
-        assertEquals(3, endLineOffsetCaptor.getAllValues().get(4).intValue());
-        assertEquals(56, endLineOffsetCaptor.getAllValues().get(5).intValue());
-        assertEquals(10, endLineOffsetCaptor.getAllValues().get(6).intValue());
-        assertEquals(18, endLineOffsetCaptor.getAllValues().get(7).intValue());
-        assertEquals(24, endLineOffsetCaptor.getAllValues().get(8).intValue());
-
-        //Verify typeOfText parameter values
-        assertEquals(TypeOfText.COMMENT, typeOfTextCaptor.getAllValues().get(0));
-        assertEquals(TypeOfText.KEYWORD, typeOfTextCaptor.getAllValues().get(1));
-        assertEquals(TypeOfText.KEYWORD, typeOfTextCaptor.getAllValues().get(2));
-        assertEquals(TypeOfText.KEYWORD, typeOfTextCaptor.getAllValues().get(3));
-        assertEquals(TypeOfText.KEYWORD, typeOfTextCaptor.getAllValues().get(4));
-        assertEquals(TypeOfText.COMMENT, typeOfTextCaptor.getAllValues().get(5));
-        assertEquals(TypeOfText.KEYWORD, typeOfTextCaptor.getAllValues().get(6));
-        assertEquals(TypeOfText.STRING, typeOfTextCaptor.getAllValues().get(7));
-        assertEquals(TypeOfText.STRING, typeOfTextCaptor.getAllValues().get(8));
+        // Check highlighting is correct
+        assertHighlighting(1, 0, 22, TypeOfText.COMMENT);
+        assertHighlighting(2, 0, 4, TypeOfText.KEYWORD);
+        assertHighlighting(4, 0, 7, TypeOfText.KEYWORD);
+        assertHighlighting(5, 0, 7, TypeOfText.KEYWORD);
+        assertHighlighting(7, 0, 3, TypeOfText.KEYWORD);
+        assertHighlighting(9, 0, 32, TypeOfText.COMMENT);
+        assertHighlighting(10, 0, 10, TypeOfText.KEYWORD);
+        assertHighlighting(10, 12, 6, TypeOfText.STRING);
     }
-
-    @Test
-    public void testWhenFileIsNotFound() throws IOException {
-        // Set up InputFile to create highlightings on
-        String testFileDir = DockerfileHighlightingTest.class.getClassLoader().getResource("project").getFile();
-        // The path does not exist
-        String testFilePath = testFileDir + "/file-not-found";
-        DefaultInputFile testFile = TestInputFileBuilder
-            .create("ProjectKey", new File(testFileDir), new File(testFilePath))
-            .setLanguage("Dockerfile")
-            .initMetadata("public class Foo {\n}").build();
-        
-        List<InputFile> inputFiles = new ArrayList<>();
-        inputFiles.add(testFile);       
-
-        // Set up highlighting mock
-        SensorContext context = Mockito.mock(SensorContext.class);
-        NewHighlighting newHighlighting = Mockito.mock(NewHighlighting.class);
-
-        // Generate highlightings
-        DockerfileHighlighting highlighting = new DockerfileHighlighting(context, inputFiles);
-        highlighting.highlight();
-
-        // Capture calls to highlight, then check method is never called
-        Mockito.verify(newHighlighting, never()).highlight(
-            startLineCaptor.capture(), 
-            startLineOffsetCaptor.capture(), 
-            endLineCaptor.capture(), 
-            endLineOffsetCaptor.capture(), 
-            typeOfTextCaptor.capture());
-    }    
-    
 }
