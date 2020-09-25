@@ -44,7 +44,12 @@ import org.mockito.Mockito;
 public class HadolintMetricsTest {
 
     /** 
-     * 
+     * Method used to build specific DockerfileToken
+     * @param uri Uri of the file on which to create a token
+     * @param type Type of Token to create
+     * @param line Line of file on which we create a token
+     * @param value String value of the token
+     * @return DockerfileToken created with desired attributes
     */
     private DockerfileToken createToken(URI uri, DockerfileTokenType type, int line, String value) {
         Token tmpToken = Token.builder()

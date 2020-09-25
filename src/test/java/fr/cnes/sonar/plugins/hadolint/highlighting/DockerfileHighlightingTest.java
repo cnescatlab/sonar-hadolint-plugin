@@ -56,7 +56,13 @@ public class DockerfileHighlightingTest {
     private DefaultInputFile testFile;
 
     /** 
-     * 
+     * Method used to build specific DockerfileToken
+     * @param uri Uri of the file on which to create a token
+     * @param type Type of Token to create
+     * @param line Line of file on which we create a token
+     * @param column Column of line on which we create a token
+     * @param value String value of the token
+     * @return DockerfileToken created with desired attributes
     */
     private DockerfileToken createToken(URI uri, DockerfileTokenType type, int line, int column, String value) {
         Token tmpToken = Token.builder()
@@ -71,7 +77,11 @@ public class DockerfileHighlightingTest {
     }
 
     /**
-     * 
+     * Method used to ease asserts on highlightings
+     * @param line Line of file where to seek for a token
+     * @param column Column in line where to seek for a token
+     * @param length Length of value of the token to seek
+     * @param type Type of token to seek
      */
     private void assertHighlighting(int line, int column, int length, TypeOfText type) {
         for (int i = column; i < column + length; i++) {
@@ -81,7 +91,7 @@ public class DockerfileHighlightingTest {
     }
 
     @Test
-    public void testMetricsAreAllGood() throws IOException {
+    public void testHighlightingsAreAllGood() throws IOException {
         
         // Set up InputFile to create highlightings on
         String testFileDir = DockerfileHighlightingTest.class.getClassLoader().getResource("project").getFile();
