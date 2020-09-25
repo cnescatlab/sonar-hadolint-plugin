@@ -13,9 +13,9 @@ ENTRYPOINT ["s3cmd"]</pre>
 <pre>FROM busybox
 CMD ["my-service", "server"]</pre>
 <p>
-<b>Warning:</b> Docker <b>CMD</b> does not process <b>$ENVIRONMENT_VARIABLE</b>s, that’s a side-effect of using <b>sh -c</b> as the default entry-point. Using the JSON notation means that you have to figure out how to handle environment variables yourself.
+<strong>Warning:</strong> Docker <strong>CMD</strong> does not process <strong>$ENVIRONMENT_VARIABLE</strong>s, that’s a side-effect of using <strong>sh -c</strong> as the default entry-point. Using the JSON notation means that you have to figure out how to handle environment variables yourself.
 </p>
 <p>
-<b>Warning:</b> The <b>CMD</b> exec form is parsed as a JSON array, so you <b>MUST</b> use double quotes (") instead of single quote (').
+<strong>Warning:</strong> The <strong>CMD</strong> exec form is parsed as a JSON array, so you <strong>MUST</strong> use double quotes (") instead of single quote (').
 </p>
 See <a href="https://docs.docker.com/v17.09/engine/reference/builder/#cmd">https://docs.docker.com/v17.09/engine/reference/builder/#cmd</a> for more info.

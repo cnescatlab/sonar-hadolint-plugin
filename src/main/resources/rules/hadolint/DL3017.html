@@ -1,6 +1,6 @@
 <h2>Rationale :</h2>
 <p>
-You should avoid <b>RUN apk upgrade</b>, as many of the “essential” packages from the parent images won’t upgrade inside an unprivileged container. If a package contained in the parent image is out-of-date, you should contact its maintainers. If you know there’s a particular package, <b>foo</b>, that needs to be updated, use <b>apk --no-cache add foo</b> to update automatically.
+You should avoid <strong>RUN apk upgrade</strong>, as many of the “essential” packages from the parent images won’t upgrade inside an unprivileged container. If a package contained in the parent image is out-of-date, you should contact its maintainers. If you know there’s a particular package, <strong>foo</strong>, that needs to be updated, use <strong>apk --no-cache add foo</strong> to update automatically.
 <blockquote>inspired by <a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run">https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run</a></blockquote>
 </p>
 <h2>Problematic code :</h2>

@@ -1,6 +1,6 @@
 <h2>Rationale :</h2>
 <p>
-Using the <b>FROM</b> instruction is a huge exercise in trust, you have to trust that a particular version or an image is safe for you to use, and that it will never be retagged maliciously. In order to prevent that, some companies copy trusted images into their own repositories, and reference them directly.
+Using the <strong>FROM</strong> instruction is a huge exercise in trust, you have to trust that a particular version or an image is safe for you to use, and that it will never be retagged maliciously. In order to prevent that, some companies copy trusted images into their own repositories, and reference them directly.
 </p>
 <p>For example, this would be an untrusted image :</p>
 <pre>FROM randomguy/fancy:10
@@ -8,7 +8,7 @@ Using the <b>FROM</b> instruction is a huge exercise in trust, you have to trust
 <p>But after an audit, the company decides to copy the image into their own repository, as it was deemed safe :</p>
 <pre>FROM my-registry.com/fancy:10
 ...</pre>
-<p>The idea is that hadolint can warn whenever an untrusted repo is used, you can use the <b>--trusted-registry</b> flag for that</p>
+<p>The idea is that hadolint can warn whenever an untrusted repo is used, you can use the <strong>--trusted-registry</strong> flag for that</p>
 <pre>hadolint --trusted-registry my-registry.com Dockerfile</pre>
 <h2>Problematic code :</h2>
 <pre>FROM randomguy/python:3.6
