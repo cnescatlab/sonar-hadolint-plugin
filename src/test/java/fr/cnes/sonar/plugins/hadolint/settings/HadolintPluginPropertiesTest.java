@@ -16,7 +16,6 @@
  */
 package fr.cnes.sonar.plugins.hadolint.settings;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.utils.log.Logger;

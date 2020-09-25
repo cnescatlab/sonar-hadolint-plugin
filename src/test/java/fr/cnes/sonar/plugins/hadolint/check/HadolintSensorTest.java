@@ -34,7 +34,6 @@ import static org.mockito.Mockito.verify;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -56,7 +55,7 @@ public class HadolintSensorTest {
     private static final String PROPERTY_DOCKERFILE_PATTERNS = "sonar.lang.patterns." + DockerfileLanguage.KEY;
 
     @Before
-    public void prepare() throws URISyntaxException, IOException {
+    public void prepare() throws IOException {
         // Prepare files for test filesystem
         String testFileDir = HadolintSensorTest.class.getClassLoader().getResource("project").getFile();
 

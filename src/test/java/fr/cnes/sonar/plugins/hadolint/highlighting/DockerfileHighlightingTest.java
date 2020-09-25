@@ -40,13 +40,8 @@ import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.api.batch.sensor.SensorContext;
-import org.sonar.api.batch.sensor.highlighting.NewHighlighting;
 import org.sonar.api.batch.sensor.highlighting.TypeOfText;
 
 @RunWith(MockitoJUnitRunner.class)

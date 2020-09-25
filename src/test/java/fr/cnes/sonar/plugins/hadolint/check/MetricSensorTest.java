@@ -39,12 +39,16 @@ import static org.junit.Assert.assertEquals;
 
 public class MetricSensorTest {
 
+    private final FileLinesContextFactory linesContextFactory = Mockito.mock(FileLinesContextFactory.class);
+    private final FileLinesContext linesContext = Mockito.mock(FileLinesContext.class);
+    private final String testFileDir = MetricSensorTest.class.getClassLoader().getResource("project").getFile();
+    private static final String PROJECT_KEY = "ProjectKey:Dockerfile";
+
     @Test
     public void testDescriptor() {
         // Set descriptor and check nominal values
         SensorDescriptor descriptor = Mockito.mock(SensorDescriptor.class);
-        FileLinesContextFactory linesContextFactory = Mockito.mock(FileLinesContextFactory.class);
-        MetricSensor sensor = new MetricSensor(linesContextFactory);
+        MetricSensor sensor = new MetricSensor(this.linesContextFactory);
 
         sensor.describe(descriptor);
         verify(descriptor).name("fr.cnes.sonar.plugins.hadolint.check.MetricSensor");
@@ -54,24 +58,21 @@ public class MetricSensorTest {
     @Test
     public void testNoFiles() {
         // Sensor will find no files in an empty filesystem
-        String testFileDir = MetricSensorTest.class.getClassLoader().getResource("project").getFile();
         DefaultFileSystem fs = new DefaultFileSystem(new File(testFileDir));
         SensorContextTester context = SensorContextTester.create(fs.baseDir());
         context.setFileSystem(fs);
-        FileLinesContextFactory linesContextFactory = Mockito.mock(FileLinesContextFactory.class);
 
-        MetricSensor sensor = new MetricSensor(linesContextFactory);
+        MetricSensor sensor = new MetricSensor(this.linesContextFactory);
         sensor.execute(context);
 
         // Check that no measures nor highlightings were generated
-        assertEquals(0, context.measures("ProjectKey:Dockerfile").size());
-        assertEquals(0, context.highlightingTypeAt("ProjectKey:Dockerfile", 1, 0).size());
+        assertEquals(0, context.measures(PROJECT_KEY).size());
+        assertEquals(0, context.highlightingTypeAt(PROJECT_KEY, 1, 0).size());
     }
 
     @Test
     public void testNormalWork() throws IOException {
         // One Dockerfile will be find by sensor
-        String testFileDir = MetricSensorTest.class.getClassLoader().getResource("project").getFile();
         DefaultFileSystem fs = new DefaultFileSystem(new File(testFileDir));
         // Create Dockerfile for test and add it in fs
         DefaultInputFile dockerfile = TestInputFileBuilder.create(
@@ -87,22 +88,20 @@ public class MetricSensorTest {
         // Init context and needed classes
         SensorContextTester context = SensorContextTester.create(fs.baseDir());
         context.setFileSystem(fs);
-        FileLinesContext linesContext = Mockito.mock(FileLinesContext.class);
-        FileLinesContextFactory linesContextFactory = Mockito.mock(FileLinesContextFactory.class);
-        Mockito.when(linesContextFactory.createFor(dockerfile)).thenReturn(linesContext);
 
-        MetricSensor sensor = new MetricSensor(linesContextFactory);
+        Mockito.when(this.linesContextFactory.createFor(dockerfile)).thenReturn(this.linesContext);
+
+        MetricSensor sensor = new MetricSensor(this.linesContextFactory);
         sensor.execute(context);
 
         // Check measures and highlightings were generated on the test file
-        assertEquals(2, context.measures("ProjectKey:Dockerfile").size());
-        assertEquals(1, context.highlightingTypeAt("ProjectKey:Dockerfile", 1, 0).size());
+        assertEquals(2, context.measures(PROJECT_KEY).size());
+        assertEquals(1, context.highlightingTypeAt(PROJECT_KEY, 1, 0).size());
     }
 
     @Test
     public void testFailToReadFile() throws IOException {
         // One Dockerfile will be find by sensor but it is empty
-        String testFileDir = MetricSensorTest.class.getClassLoader().getResource("project").getFile();
         DefaultFileSystem fs = new DefaultFileSystem(new File(testFileDir));
         // Create Dockerfile for test and add it in fs
         DefaultInputFile dockerfile = TestInputFileBuilder.create(
@@ -116,17 +115,16 @@ public class MetricSensorTest {
         
         // Init context and needed classes
         SensorContextTester context = SensorContextTester.create(fs.baseDir());
-        context.setFileSystem(fs);
-        FileLinesContext linesContext = Mockito.mock(FileLinesContext.class);
-        FileLinesContextFactory linesContextFactory = Mockito.mock(FileLinesContextFactory.class);
-        Mockito.when(linesContextFactory.createFor(dockerfile)).thenReturn(linesContext);
+        context.setFileSystem(fs);      
+        
+        Mockito.when(this.linesContextFactory.createFor(dockerfile)).thenReturn(this.linesContext);
 
         MetricSensor sensor = new MetricSensor(linesContextFactory);
         sensor.execute(context);
 
         // Check measures and highlightings were generated on the test file
-        assertEquals(0, context.measures("ProjectKey:Dockerfile").size());
-        assertEquals(0, context.highlightingTypeAt("ProjectKey:Dockerfile", 1, 0).size());
+        assertEquals(0, context.measures(PROJECT_KEY).size());
+        assertEquals(0, context.highlightingTypeAt(PROJECT_KEY, 1, 0).size());
     }
     
 }
