@@ -39,7 +39,7 @@ import org.sonar.api.utils.log.Loggers;
  */
 public class MetricSensor implements Sensor {
     
-    private static final Logger LOG = Loggers.get(MetricSensor.class);
+    private static final Logger LOGGER = Loggers.get(MetricSensor.class);
 
     private final FileLinesContextFactory fileLinesContextFactory;
 
@@ -49,9 +49,8 @@ public class MetricSensor implements Sensor {
 
     @Override
     public void describe(SensorDescriptor descriptor) {
-        descriptor
-        .name(getClass().getName())
-        .onlyOnLanguage(DockerfileLanguage.KEY);
+        descriptor.name(getClass().getName());
+        descriptor.onlyOnLanguage(DockerfileLanguage.KEY);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class MetricSensor implements Sensor {
                 DockerfileMetrics.saveLineTypes(context, file, tokenList, this.fileLinesContextFactory);
 
             } catch (IOException e) {
-                LOG.error(String.format("Failed to read file '%s'", file.toString()), e);
+                LOGGER.error(String.format("Failed to read file '%s'", file.toString()), e);
             }
         }
     }
