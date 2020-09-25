@@ -116,6 +116,7 @@ public class HadolintSensorTest {
         verify(descriptor).name("fr.cnes.sonar.plugins.hadolint.check.HadolintSensor");
         verify(descriptor).onlyOnFileType(InputFile.Type.MAIN);
         verify(descriptor).createIssuesForRuleRepositories(DockerfileLanguage.KEY);
+        verify(descriptor).onlyOnLanguages(DockerfileLanguage.KEY);
     }
     
     @Test
@@ -130,8 +131,6 @@ public class HadolintSensorTest {
 		final HadolintSensor sensor = new HadolintSensor();
         sensor.execute(context);
         assertEquals(0, context.allIssues().size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE_PATH).size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE2_PATH).size());
     }
 
     @Test
@@ -151,10 +150,8 @@ public class HadolintSensorTest {
 		final HadolintSensor sensor = new HadolintSensor();
         sensor.execute(context);
         
-        // Check we get the expected issues and measures
+        // Check we get the expected issue
         assertEquals(1, context.allIssues().size());
-        assertEquals(2, context.measures(PROJECT_KEY + ":" + DOCKERFILE_PATH).size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE2_PATH).size());
     }
 
     @Test
@@ -172,12 +169,10 @@ public class HadolintSensorTest {
         Mockito.when(rules.find(RuleKey.of(DockerfileLanguage.KEY, "DL3000"))).thenReturn(rule);
         context.setActiveRules(rules);
 
-        // Check we get the expected issues and measures
+        // Check we get the expected issue
 		final HadolintSensor sensor = new HadolintSensor();
         sensor.execute(context);
         assertEquals(1, context.allIssues().size());
-        assertEquals(2, context.measures(PROJECT_KEY + ":" + DOCKERFILE_PATH).size());
-        assertEquals(2, context.measures(PROJECT_KEY + ":" + DOCKERFILE2_PATH).size());
     }
 
     @Test
@@ -192,10 +187,8 @@ public class HadolintSensorTest {
 		final HadolintSensor sensor = new HadolintSensor();
         sensor.execute(context);
 
-        // Check we have measure on Dockerfile but no issues
+        // Check we have no issues
         assertEquals(0, context.allIssues().size());
-        assertEquals(2, context.measures(PROJECT_KEY + ":" + DOCKERFILE_PATH).size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE2_PATH).size());
     }
 
     @Test
@@ -210,10 +203,8 @@ public class HadolintSensorTest {
 		final HadolintSensor sensor = new HadolintSensor();
         sensor.execute(context);
 
-        // Check we have measures on Dockerfile but no issues
+        // Check we have no issues
         assertEquals(0, context.allIssues().size());
-        assertEquals(2, context.measures(PROJECT_KEY + ":" + DOCKERFILE_PATH).size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE2_PATH).size());
     }
 
     @Test
@@ -228,28 +219,8 @@ public class HadolintSensorTest {
 		final HadolintSensor sensor = new HadolintSensor();
         sensor.execute(context);
 
-        // Check we have measures on Dockerfile but no issues
+        // Check we have no issues
         assertEquals(0, context.allIssues().size());
-        assertEquals(2, context.measures(PROJECT_KEY + ":" + DOCKERFILE_PATH).size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE2_PATH).size());
-    }
-
-    @Test
-	public void testDockerfileNotFound() {
-        // Path for Dockerfile is incorrect
-        // But path for report is correct
-        MapSettings settings = new MapSettings();
-        settings.setProperty(PROPERTY_REPORT_PATH, REPORT_PATH);
-        settings.setProperty(PROPERTY_DOCKERFILE_PATTERNS, "Dockerfile_not_exist");
-        context.setSettings(settings);
-
-		final HadolintSensor sensor = new HadolintSensor();
-        sensor.execute(context);
-
-        // Check we have no measures and no issues
-        assertEquals(0, context.allIssues().size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE_PATH).size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE2_PATH).size());
     }
 
     @Test
@@ -270,10 +241,8 @@ public class HadolintSensorTest {
 		final HadolintSensor sensor = new HadolintSensor();
         sensor.execute(context);
 
-        // Check we have measures on Dockerfile but no issues
+        // Check we have no issues
         assertEquals(0, context.allIssues().size());
-        assertEquals(2, context.measures(PROJECT_KEY + ":" + DOCKERFILE_PATH).size());
-        assertEquals(0, context.measures(PROJECT_KEY + ":" + DOCKERFILE2_PATH).size());
     }
     
 }
