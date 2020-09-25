@@ -44,6 +44,8 @@ public class TokenizerTest {
         DockerfileToken token = tokens.get(0);
 
         assertEquals(DockerfileTokenType.COMMENT, token.getType());
+        assertEquals(DockerfileTokenType.COMMENT.getName(), token.getType().getName());
+        assertEquals(DockerfileTokenType.COMMENT.getValue(), token.getType().getValue());
         assertEquals(1, token.getStartLine().intValue());
         assertEquals(1, token.getEndLine().intValue());
         assertEquals(0, token.getStartColumn().intValue());
