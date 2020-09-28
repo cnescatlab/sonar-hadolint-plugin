@@ -1,4 +1,4 @@
-# [WIP] Hadolint SonarQube Plugin
+# Hadolint SonarQube Plugin
 [![Build Status](https://travis-ci.org/cnescatlab/sonar-hadolint-plugin.svg?branch=dev)](https://travis-ci.org/cnescatlab/sonar-hadolint-plugin)
 [![SonarQUbe Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin)
 [![SonarQube Bugs](https://sonarcloud.io/api/project_badges/measure?project=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin&metric=bugs)](https://sonarcloud.io/dashboard?id=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin)
@@ -66,7 +66,7 @@ These properties can be defined in a `sonar-project.properties` files, or as com
 
 |   plugin version   |    hadolint version     | supported SonarQube version |
 |:------------------:|:-----------------------:|:---------------------------:|
-|        1.0.0       |          1.18.0         |        7.9 -> 8.4           |
+|        0.1.0       |          1.18.0         |        7.9 -> 8.4           |
 
 ### Building the plugin
 If you want to build the plugin :
