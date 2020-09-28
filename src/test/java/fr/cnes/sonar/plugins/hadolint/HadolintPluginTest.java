@@ -31,11 +31,11 @@ public class HadolintPluginTest {
     private static final Version VERSION_7_9 = Version.create(7, 9);
 
     @Test
-	public void test_extensions_are_all_set() {
+	public void testExtensionsAreAllSet() {
 		HadolintPlugin hadolintPlugin = new HadolintPlugin();
 		SonarRuntime runtime = SonarRuntimeImpl.forSonarQube(VERSION_7_9, SonarQubeSide.SERVER, SonarEdition.COMMUNITY);
 		Plugin.Context context = new Plugin.Context(runtime);
 		hadolintPlugin.define(context);
-		Assert.assertEquals(5, context.getExtensions().size());
+		Assert.assertEquals(6, context.getExtensions().size());
 	}    
 }

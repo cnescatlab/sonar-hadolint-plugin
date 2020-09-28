@@ -17,6 +17,7 @@
 package fr.cnes.sonar.plugins.hadolint;
 
 import fr.cnes.sonar.plugins.hadolint.check.HadolintSensor;
+import fr.cnes.sonar.plugins.hadolint.check.MetricSensor;
 import fr.cnes.sonar.plugins.hadolint.languages.*;
 import fr.cnes.sonar.plugins.hadolint.rules.HadolintRulesDefinition;
 import fr.cnes.sonar.plugins.hadolint.settings.HadolintPluginProperties;
@@ -44,5 +45,6 @@ public class HadolintPlugin implements Plugin {
 		
 		// Sonar scanner extension
 		context.addExtension(HadolintSensor.class);
+		context.addExtension(MetricSensor.class);
 	}
 }

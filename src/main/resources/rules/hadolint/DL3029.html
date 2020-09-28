@@ -1,11 +1,11 @@
 <h2>Rationale :</h2>
 <p>
-Specifying <b>--platform=</b> in the <a href="https://docs.docker.com/engine/reference/builder/#from">docker file FROM clause</a> forces the Image to build only one target platform. This has a number of negative consequences:
+Specifying <strong>--platform=</strong> in the <a href="https://docs.docker.com/engine/reference/builder/#from">docker file FROM clause</a> forces the Image to build only one target platform. This has a number of negative consequences:
 <ul>
     				<li>It is not possible to build a <a href="https://www.docker.com/blog/docker-official-images-now-multi-platform/">multi-platform Image</a> from this Docker file.</li>
-    				<li>The platform that you build on must be the same as the platform specified in <b>--platform=</b></li>
+    				<li>The platform that you build on must be the same as the platform specified in <strong>--platform=</strong></li>
 </ul>
-A better approach is to omit <b>FROM --platform</b> in the docker file and to specify in <b>buildx --platform=</b> during the build if control of the image platform target is needed.
+A better approach is to omit <strong>FROM --platform</strong> in the docker file and to specify in <strong>buildx --platform=</strong> during the build if control of the image platform target is needed.
 </p>
 <h2>Problematic code :</h2>
 <pre>FROM --platform=x86 busybox</pre>

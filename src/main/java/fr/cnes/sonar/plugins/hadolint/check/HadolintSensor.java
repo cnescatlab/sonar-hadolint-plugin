@@ -16,9 +16,7 @@
  */
 package fr.cnes.sonar.plugins.hadolint.check;
 
-import fr.cnes.sonar.plugins.hadolint.highlighting.DockerfileHighlighting;
 import fr.cnes.sonar.plugins.hadolint.languages.*;
-import fr.cnes.sonar.plugins.hadolint.metrics.DockerfileMetrics;
 import fr.cnes.sonar.plugins.hadolint.model.CheckstyleError;
 import fr.cnes.sonar.plugins.hadolint.model.CheckstyleFile;
 import fr.cnes.sonar.plugins.hadolint.model.CheckstyleReport;
@@ -55,11 +53,6 @@ public class HadolintSensor implements Sensor {
      * Logger for this class.
      */
     private static final Logger LOGGER = Loggers.get(HadolintSensor.class);
-
-    /**
-     * Sonar Scanner property used to list Dockerfile patterns
-     */
-    private static final String DOCKERFILE_PATTERNS = "sonar.lang.patterns." + DockerfileLanguage.KEY;
 
     /**
      * Give information about this sensor.
@@ -100,17 +93,6 @@ public class HadolintSensor implements Sensor {
 
         // Report files found in file system and corresponding to SQ property.
         final List<String> reportFiles = getReportFiles(config, fileSystem);
-
-        // List of Dockerfile found using given patterns
-        final List<InputFile> dockerfiles = getDockerfiles(config, fileSystem);
-
-        // Generates metrics on each Dockerfile
-        DockerfileMetrics metrics = new DockerfileMetrics(sensorContext, dockerfiles);
-        metrics.analyse();
-
-        // Generates highlighting on each Dockerfile
-        DockerfileHighlighting highlighting = new DockerfileHighlighting(sensorContext, dockerfiles);
-        highlighting.highlight();
 
         // If exists, unmarshal each xml result file.
         for(final String reportPath : reportFiles) {
@@ -202,30 +184,6 @@ public class HadolintSensor implements Sensor {
                 LOGGER.error(String.format("The source file '%s' mentionned in Hadolint report was not found.", file.getName()));
             }
         }
-
-        return result;
-    }
-
-    /**
-     * Returns a list of identified Dockerfiles to analyze
-     *
-     * @param config     Configuration of the analysis where properties are put.
-     * @param fileSystem The current file system.
-     * @return Return a list of path 'findable' in the file system.
-     */
-    private List<InputFile> getDockerfiles(final Configuration config, final FileSystem fileSystem) {
-        // Contains the result to be returned.
-        final List<InputFile> result = new ArrayList<>();
-
-        // Retrieves the non-verified path list from the SonarQube property.
-        final String[] patterns = config.getStringArray(DOCKERFILE_PATTERNS);
-
-        // For each pattern given with the previous property
-        // Get all corresponding files
-        FilePredicate predicate = fileSystem.predicates().matchesPathPatterns(patterns);
-        fileSystem.inputFiles(predicate).forEach(result::add);
-
-        LOGGER.info(String.format("%d Dockerfile found using given patterns : %s", result.size(), String.join(", ", patterns)));
 
         return result;
     }

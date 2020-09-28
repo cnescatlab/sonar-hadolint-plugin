@@ -3,7 +3,7 @@
 <a href="http://crosbymichael.com/dockerfile-best-practices-take-2.html">http://crosbymichael.com/dockerfile-best-practices-take-2.html</a>
 <blockquote>Updates will be baked into the base images, so you don't need to run apt-get upgrade in your containers. Because of the isolation that happens this can often fail if something is trying to modify init or make device changes inside a container. It also produces inconsistent images because you no longer have one source of truth of how your application should run and what versions of dependencies are included in the image.</blockquote>
 <a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a>
-<blockquote>You should avoid <b>RUN apt-get upgrade</b> or <b>RUN apt-get dist-upgrade</b>, as many of the “essential” packages from the base images won’t upgrade inside an unprivileged container. If a package contained in the base image is out-of-date, you should contact its maintainers.</blockquote>
+<blockquote>You should avoid <strong>RUN apt-get upgrade</strong> or <strong>RUN apt-get dist-upgrade</strong>, as many of the “essential” packages from the base images won’t upgrade inside an unprivileged container. If a package contained in the base image is out-of-date, you should contact its maintainers.</blockquote>
 </p>
 <h2>Problematic code :</h2>
 <pre>FROM debian
