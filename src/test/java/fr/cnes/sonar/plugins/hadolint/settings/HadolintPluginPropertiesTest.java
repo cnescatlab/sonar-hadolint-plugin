@@ -45,7 +45,7 @@ public class HadolintPluginPropertiesTest {
     @Test
     public void testGetDockerfileKeywords() {
         List<String> keywords = HadolintPluginProperties.getDockerfileKeywords();
-        assertEquals(18, keywords.size());
+        assertEquals(19, keywords.size());
     }
 
     @Test(expected = InvocationTargetException.class)
