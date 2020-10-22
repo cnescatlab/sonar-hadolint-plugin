@@ -42,9 +42,9 @@ public class HadolintPluginProperties {
     public static final String HADOLINT_NAME = "Hadolint";
 
     /**
-     * List of know keywords in Dockerfiles
+     * List of known keywords in Dockerfiles
      */
-    private static final List<String> DOCKERFILE_KEYWORDS = Arrays.asList("FROM", "RUN", "CMD", "LABEL", "MAINTAINER",
+    private static final List<String> DOCKERFILE_KEYWORDS = Arrays.asList("FROM", "AS", "RUN", "CMD", "LABEL", "MAINTAINER",
             "EXPOSE", "ENV", "ADD", "COPY", "ENTRYPOINT", "VOLUME", "USER", "WORKDIR", "ARG", "ONBUILD", "STOPSIGNAL",
             "HEALTHCHECK", "SHELL");
 
