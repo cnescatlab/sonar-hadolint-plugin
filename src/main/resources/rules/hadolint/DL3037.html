@@ -1,0 +1,15 @@
+<h2>Rationale :</h2>
+<p>
+<a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#apt-get">https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#apt-get</a>
+<blockquote>Version pinning forces the build to retrieve a particular version regardless of what’s in the cache. This technique can also reduce failures due to unanticipated changes in required packages.</blockquote>
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM opensuse/leap:15.2
+RUN zypper install -y httpd && zypper clean</pre>
+<h2>Correct code :</h2>
+<pre>FROM opensuse/leap:15.2
+RUN zypper install -y httpd=2.4.46 && zypper clean</pre>
+<h2>Notes :</h2>
+<p>Zypper also supports version constraining:
+<pre>RUN zypper install -y httpd\>=2.4 && zypper clean</pre>
+Use this to specify minimum version requirements.</p>

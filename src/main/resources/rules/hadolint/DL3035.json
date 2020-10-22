@@ -1,0 +1,14 @@
+{
+    "title": "Do not use zypper update ",
+    "defaultSeverity": "MAJOR",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "20min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

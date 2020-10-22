@@ -1,0 +1,10 @@
+<h2>Rationale :</h2>
+<p>
+Without the <b>-y</b> flag or the equivalent <b>--assumeyes</b> flag, yum will not successfully install a package, because human input is expected. The <b>-y</b> flag makes yum assume 'yes' as the answer to prompts during the installation.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM centos
+RUN yum install httpd-2.24.4 && yum clean all</pre>
+<h2>Correct code :</h2>
+<pre>FROM centos
+RUN yum install -y httpd-2.24.4 && yum clean all</pre>

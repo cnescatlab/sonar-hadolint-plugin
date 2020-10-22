@@ -1,0 +1,13 @@
+<h2>Rationale :</h2>
+<p>
+See DL3005. Problems include :
+    <ul>
+        <li>Updates failing on packages from base images in unprivileged containers</li>
+        <li>Inconsistencies between builds producing problems for application developers</li>
+    </ul>
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM centos
+RUN yum update -y</pre>
+<h2>Correct code :</h2>
+<pre>FROM centos</pre>

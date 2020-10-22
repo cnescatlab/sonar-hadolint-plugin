@@ -1,0 +1,14 @@
+{
+    "title": "Non-interactive switch missing from zypper command: zypper install -y",
+    "defaultSeverity": "BLOCKER",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

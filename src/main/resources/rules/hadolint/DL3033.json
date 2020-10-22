@@ -1,0 +1,14 @@
+{
+    "title": "Specify version with yum install -y <package>-<version>",
+    "defaultSeverity": "CRITICAL",
+    "status": "READY",
+    "type": "CODE_SMELL",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ]
+}

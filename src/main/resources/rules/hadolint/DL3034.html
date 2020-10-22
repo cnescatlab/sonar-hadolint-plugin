@@ -1,0 +1,8 @@
+<h2>Rationale :</h2>
+<p>
+Omitting the non-interactive switch causes the command to fail during the build process, because zypper would expect manual input. Use the <b>-y</b> or the equivalent <b>--no-confirm</b> flag to avoid this.
+</p>
+<h2>Problematic code :</h2>
+<pre>RUN zypper install httpd=2.4.46 && zypper clean</pre>
+<h2>Correct code :</h2>
+<pre>RUN zypper install -y httpd=2.4.46 && zypper clean</pre>
