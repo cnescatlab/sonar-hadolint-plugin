@@ -1,0 +1,23 @@
+<h2>Rationale :</h2>
+<p>
+See DL3031, DL3005. Problems include :
+    <ul>
+        <li>Updates failing on packages from base images in unprivileged containers</li>
+        <li>Inconsistencies between builds producing problems for application developers</li>
+    </ul>
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM opensuse/leap:15.2
+RUN zypper update -y</pre>
+<h2>Correct code :</h2>
+<pre>FROM opensuse/leap:15.2
+RUN zypper install -y httpd\>=2.4 && zypper clean
+RUN zypper patch --cve=cve-2015-7547 && zypper clean</pre>
+<h2>Notes :</h2>
+<p>
+This rule lints against blanket updates and dist-upgrades, but allows more specific updates by two methods:
+    <ul>
+        <li>use <b>zypper install -y $PACKAGE>=$VERSION</b> to upgrade a particular package, giving a version requirement.</li>
+        <li>use <b>zypper patch</b> to mitigate particular security vulnerabilities.</li>
+    </ul>
+</p>

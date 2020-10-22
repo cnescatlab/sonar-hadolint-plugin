@@ -1,0 +1,8 @@
+<h2>Rationale :</h2>
+<p>Reduce layer and image size by deleting unneeded caches after running zypper.</p>
+<h2>Problematic code :</h2>
+<pre>FROM opensuse/leap:15.2
+RUN zypper install -y httpd=2.4.46</pre>
+<h2>Correct code :</h2>
+<pre>FROM opensuse/leap:15.2
+RUN zypper install -y httpd=2.4.46 && zypper clean</pre>
