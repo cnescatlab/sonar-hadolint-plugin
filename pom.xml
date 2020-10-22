@@ -5,7 +5,7 @@
     <groupId>fr.cnes.sonarqube.plugins</groupId>
     <artifactId>sonar-hadolint-plugin</artifactId>
     <packaging>sonar-plugin</packaging>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
     <name>SonarQube Hadolint Plugin</name>
 
     <description>Hadolint plugin for SonarQube</description>
