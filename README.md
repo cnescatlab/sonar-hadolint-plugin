@@ -55,6 +55,7 @@ Go to the project page to find indications : https://github.com/hadolint/hadolin
   - Comma separated list of patterns matching Dockerfiles inside your project.  
   - This property **MUST** be defined if you want the plugin to work.  
   - **/!\\** _Those patterns must match Dockerfiles only ! You will have issues if they match another analyzed language._
+  - Default: `Dockerfile`.
 - `sonar.hadolint.reports.path`: 
   - Comma separated list of path to Hadolint reports in checkstyle format.
   - Default: `hadolint-report.xml`.
