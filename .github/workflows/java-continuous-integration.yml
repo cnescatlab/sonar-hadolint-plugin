@@ -2,8 +2,8 @@
 # ===========
 # This workflow is triggered each time
 # commits are pushed to GitHub or a pull request is opened.
-# It launches three jobs in parallel : a build with java 8,
-# a build with java 11 and a SonarCloud analysis.
+# It launches two jobs in parallel : a build with java 11 
+# and a SonarCloud analysis.
 ---
 name: Java CI
 
@@ -16,10 +16,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '8', '11' ]
-    name: Java ${{ matrix.Java }} CI
+    name: Java 11 CI
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -29,7 +26,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: ${{ matrix.java }}
+          java-version: '11'
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
