@@ -76,6 +76,24 @@ public class HadolintPluginProperties {
      **/
     public static final String REPORT_PATH_DEFAULT = "hadolint-report.xml";
 
+    // Dockerfiles path
+    /**
+     * Key for the dockerfiles path property
+     **/
+    public static final String DOCKERFILES_PATH_KEY = "sonar.lang.patterns.dockerfile";
+    /**
+     * Name for the dockerfiles path property
+     **/
+    public static final String DOCKERFILES_PATH_NAME = "Dockerfiles files";
+    /**
+     * Description for the dockerfiles path property
+     **/
+    public static final String DOCKERFILES_PATH_DESC = "Path to the Dockerfiles to be analyzed.";
+    /**
+     * Default value for the dockerfiles path property
+     **/
+    public static final String DOCKERFILES_PATH_DEFAULT = "Dockerfile";
+
     /**
      * Plugin properties extensions.
      *
@@ -83,6 +101,13 @@ public class HadolintPluginProperties {
      */
     public static List<PropertyDefinition> getProperties() {
         return Arrays.asList(
+            PropertyDefinition.builder(DOCKERFILES_PATH_KEY).multiValues(true)
+                    .defaultValue(DOCKERFILES_PATH_DEFAULT)
+                    .category(HADOLINT_NAME)
+                    .name(DOCKERFILES_PATH_NAME)
+                    .description(DOCKERFILES_PATH_DESC)
+                    .onQualifiers(Qualifiers.PROJECT)
+                    .build(),
             PropertyDefinition.builder(REPORT_PATH_KEY).multiValues(true)
                     .defaultValue(REPORT_PATH_DEFAULT)
                     .category(HADOLINT_NAME)
