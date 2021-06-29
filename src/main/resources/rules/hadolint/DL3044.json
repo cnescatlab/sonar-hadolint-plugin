@@ -1,0 +1,14 @@
+{
+    "title": "Do not refer to an environment variable within the same ENV statement where it is defined.",
+    "type": "BUG",
+    "status": "ready",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "10min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ],
+    "defaultSeverity": "MAJOR"
+  }

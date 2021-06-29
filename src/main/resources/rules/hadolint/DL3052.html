@@ -1,0 +1,20 @@
+<h2>Rationale :</h2>
+<p>
+    A label-schema may require a label to contain some URL, for example to ensure compliance to <a href="https://github.com/opencontainers/image-spec/blob/master/annotations.md">standardized specifications.</a>
+</p>
+<p>
+    This rule is activated by specifying a label-schema, where one label must contain a URL.
+    This can be specified via config file :
+    <pre>label-schema:
+  website: url</pre>
+    or via command line:
+    <pre>$ hadolint --require-label website:url Dockerfile</pre>
+</p>
+<h2>Problematic code :</h2>
+<pre>LABEL website="not a url"</pre>
+<h2>Correct code :</h2>
+<pre>LABEL website="https://www.example.com"</pre>
+<h2>Note :</h2>
+<p>
+    This rule does not expand variables. It requires the value of the label to be a literal URL.
+</p>

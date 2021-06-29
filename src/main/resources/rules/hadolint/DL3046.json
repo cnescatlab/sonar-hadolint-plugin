@@ -1,0 +1,14 @@
+{
+    "title": "useradd without flag -l and high UID will result in excessively large Image.",
+    "type": "BUG",
+    "status": "ready",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ],
+    "defaultSeverity": "BLOCKER"
+  }

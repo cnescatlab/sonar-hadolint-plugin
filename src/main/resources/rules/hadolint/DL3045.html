@@ -1,0 +1,19 @@
+<h2>Rationale :</h2>
+<p>
+    While <strong>COPYing</strong> to a relative path is not problematic per sé, errors happen, when changes are introduced to the <strong>WORKDIR</strong> without updating the destination of the <strong>COPY</strong> command.
+    Since it is easy to overlook this relationship, Hadolint emits this warning when no <strong>WORKDIR</strong> is set and <strong>COPY</strong> has a relative destination.
+    This case is error prone and either setting the <strong>>COPY</strong>-destination absolute or the <strong>WORKDIR</strong> explicitly will reduce the probability of having an error.
+    It is assumed, that when a <strong>WORKDIR</strong> is set, the programmer will make sure it works well together with the destination of the <strong>COPY</strong> statements.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM scratch
+COPY foo bar</pre>
+<h2>Correct code :</h2>
+<pre>FROM scratch
+COPY foo /bar
+
+or
+
+FROM scratch
+WORKDIR /
+COPY foo bar</pre>

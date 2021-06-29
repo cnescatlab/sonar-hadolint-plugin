@@ -1,0 +1,10 @@
+<h2>Rationale :</h2>
+<p>
+    <strong>yarn</strong> keeps a local cache of downloaded packages.
+    This unnecessarily increases image size. It can be cleared by executing <strong>yarn cache clean</strong>.
+</p>
+<h2>Problematic code :</h2>
+<pre>RUN yarn install</pre>
+<h2>Correct code :</h2>
+<pre>RUN yarn install \
+&& yarn cache clean</pre>

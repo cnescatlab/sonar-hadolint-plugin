@@ -1,0 +1,14 @@
+{
+    "title": "Multiple consecutive RUN instructions. Consider consolidation.",
+    "type": "CODE_SMELL",
+    "status": "ready",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "10min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ],
+    "defaultSeverity": "MAJOR"
+  }

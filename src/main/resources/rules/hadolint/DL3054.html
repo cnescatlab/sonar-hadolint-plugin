@@ -1,0 +1,22 @@
+<h2>Rationale :</h2>
+<p>
+    This rule allows users to ensure a label contains a literal SPDX license identifier.
+    This may be desirable as part of the release process, to ensure images released are properly licensed and the license can be detected by automated tools.
+</p>
+<p>
+    This rule is activated by specifying a label-schema, where one label must contain a URL.
+    This can be specified via config file :
+    <pre>label-schema:
+  license: spdx</pre>
+    or via command line:
+    <pre>$ hadolint --require-label license:spdx Dockerfile</pre>
+</p>
+<h2>Problematic code :</h2>
+<pre>LABEL license="Thou shall not copyright infringe"</pre>
+<h2>Correct code :</h2>
+<pre>LABEL license="BSD-3-Clause"</pre>
+<h2>Note :</h2>
+<p>
+    This rule does not expand variables. The value of the label must be a literal SPDX license identifier.
+    A list of valid license identifiers can be found <a href="https://spdx.org/licenses/">here</a>.
+</p>
