@@ -41,6 +41,8 @@ import org.sonar.api.utils.log.Loggers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -205,9 +207,20 @@ public class HadolintSensor implements Sensor {
         // Check if each path is known by the file system and add it to the processable
         // path list,
         // otherwise print a warning and ignore this result file.
+        Path reportPath;
+        File report;
+        
         for (String path : pathArray) {
-            final File file = new File(fileSystem.baseDir(), path);
-            if (file.exists() && file.isFile()) {
+            // Check if the path is absolute and create the appropriate File object
+            reportPath = Paths.get(path, "");
+
+            if(reportPath.isAbsolute()) {
+                report = new File(path);
+            } else {
+                report = new File(fileSystem.baseDir(), path);
+            }
+
+            if (report.exists() && report.isFile()) {
                 result.add(path);
                 LOGGER.info(String.format("Result file %s has been found and will be processed.", path));
             } else {

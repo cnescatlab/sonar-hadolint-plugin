@@ -151,6 +151,13 @@ public class HadolintSensorTest {
         
         // Check we get the expected issue
         assertEquals(1, context.allIssues().size());
+
+        // Do the same test with report absolute path
+        File absolutePathReport = new File(REPORT_PATH);
+        settings.setProperty(PROPERTY_REPORT_PATH, absolutePathReport.getAbsolutePath());
+        context.setSettings(settings);
+        sensor.execute(context);
+        assertEquals(1, context.allIssues().size());
     }
 
     @Test
