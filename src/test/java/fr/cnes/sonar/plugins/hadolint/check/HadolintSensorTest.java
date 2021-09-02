@@ -133,7 +133,7 @@ public class HadolintSensorTest {
     }
 
     @Test
-	public void testNormalWork() {
+	public void testRelativePath() {
         // Path for reports and Dockerfiles are correct
         MapSettings settings = new MapSettings();
         settings.setProperty(PROPERTY_REPORT_PATH, REPORT_PATH);
@@ -151,12 +151,26 @@ public class HadolintSensorTest {
         
         // Check we get the expected issue
         assertEquals(1, context.allIssues().size());
+    }
 
-        // Do the same test with report absolute path
-        File absolutePathReport = new File(REPORT_PATH);
-        settings.setProperty(PROPERTY_REPORT_PATH, absolutePathReport.getAbsolutePath());
+    @Test
+	public void testAbsolutePath() {
+        // Path for reports and Dockerfiles are correct
+        MapSettings settings = new MapSettings();
+        settings.setProperty(PROPERTY_REPORT_PATH, context.fileSystem().resolvePath(REPORT_PATH).getAbsolutePath());
+        settings.setProperty(PROPERTY_DOCKERFILE_PATTERNS, DOCKERFILE_PATH);
         context.setSettings(settings);
+
+        // Simulate active rule
+        ActiveRules rules = Mockito.mock(ActiveRules.class);
+        ActiveRule rule = Mockito.mock(ActiveRule.class);
+        Mockito.when(rules.find(RuleKey.of(DockerfileLanguage.KEY, "DL3000"))).thenReturn(rule);
+        context.setActiveRules(rules);
+
+		final HadolintSensor sensor = new HadolintSensor();
         sensor.execute(context);
+
+        // Check we get the expected issue
         assertEquals(1, context.allIssues().size());
     }
 
