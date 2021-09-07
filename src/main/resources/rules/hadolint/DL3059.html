@@ -1,0 +1,12 @@
+<h2>Rationale :</h2>
+<p>
+    Each <strong>RUN</strong> instruction will create a new layer in the resulting image.
+    Therefore consolidating consecutive <strong>RUN</strong> instructions will reduce the layer count (see <a href="https://docs.docker.com/develop/dev-best-practices/">https://docs.docker.com/develop/dev-best-practices/</a>).
+    In addition to that, each <strong>RUN</strong> runs in its own shell, which can be the source of confusion when part of a <strong>RUN</strong> instruction changes something about the environment, because these changes may vanish in the next <strong>RUN</strong> instruction.
+</p>
+<h2>Problematic code :</h2>
+<pre>RUN command1
+RUN command2</pre>
+<h2>Correct code :</h2>
+<pre>RUN command1 \
+&& command2</pre>

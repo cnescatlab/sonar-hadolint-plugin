@@ -1,0 +1,14 @@
+{
+    "title": "yarn cache clean missing after yarn install was run.",
+    "type": "CODE_SMELL",
+    "status": "ready",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ],
+    "defaultSeverity": "MAJOR"
+  }

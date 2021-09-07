@@ -1,0 +1,14 @@
+{
+    "title": "Label <label> is not a valid time format - must be conform to RFC3339.",
+    "type": "CODE_SMELL",
+    "status": "ready",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "10min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ],
+    "defaultSeverity": "MAJOR"
+  }

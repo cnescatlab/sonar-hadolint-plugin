@@ -1,0 +1,9 @@
+<h2>Rationale :</h2>
+<p>
+    Not all strings are supported as label keys.
+    See <a href="https://docs.docker.com/config/labels-custom-metadata/">the official documentation</a> for reference.
+</p>
+<h2>Problematic code :</h2>
+<pre>LABEL +?not..valid--key="foo"</pre>
+<h2>Correct code :</h2>
+<pre>LABEL valid-key.label="bar"</pre>

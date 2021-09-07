@@ -1,0 +1,18 @@
+<h2>Rationale :</h2>
+<p>
+    In certain situations, it may be desirable to ensure no labels other than those specified in the label-schema are present.
+    This may be required to avoid information leakage, to not confuse label parsers or to ensure compliance to standards.
+</p>
+<p>
+    This rule is only activated when linting with the hadolint <strong>strict-labels</strong> option.
+    This can be specified via config file :
+    <pre>strict-labels: true</pre>
+    or via command line:
+    <pre>$ hadolint --strict-labels Dockerfile</pre>
+    Note, that when no label-schema is specified, all labels are considered superfluous by this rule.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+LABEL superfluous="this should not be here"</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox</pre>

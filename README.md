@@ -69,6 +69,7 @@ These properties can be defined in a `sonar-project.properties` files, or as com
 |   plugin version   |    hadolint version     | supported SonarQube version |
 |:------------------:|:-----------------------:|:---------------------------:|
 |        1.0.0       |          1.18.x         |        7.9 -> 8.4           |
+|        1.1.0       |          2.6.1          |           8.9.x             |
 
 ### Building the plugin
 If you want to build the plugin :

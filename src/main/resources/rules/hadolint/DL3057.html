@@ -1,0 +1,22 @@
+<h2>Rationale :</h2>
+<p>
+    When it is required to define a health check (e.g. by company policy), it must not be omitted.
+</p>
+<p>
+    This is an optional rule which is disabled by default in Hadolint.
+    To enable it, set its severity to the preferred level, e.g.
+    <pre>$ hadolint --warning=DL3057 Dockerfile</pre>
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox
+HEALTHCHECK CMD /bin/health</pre>
+<pre>FROM busybox
+HEALTHCHECK NONE</pre>
+<h2>Note :</h2>
+<p>
+    This rule is disabled by default, because a <strong>HEALTHCHECK</strong> is not desirable in all circumstances.
+    Images used with Kubernetes for example do not benefit from a <strong>HEALTHCHECK</strong> instruction, as Kubernetes brings its own mechanisms to accomplish the same thing.
+    If however it is desired, this rule makes sure a build stage either has a <strong>HEALTHCHECK</strong> instruction, or inherits it from an earlier build stage.
+</p>

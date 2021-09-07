@@ -1,0 +1,19 @@
+<h2>Rationale :</h2>
+<p>
+    This rule is only activated, when specifying a label-schema to Hadolint.
+    This example presumes the label-schema is:
+    <pre>
+label-schema:
+    version: text 
+    </pre>
+    or specified via command line:
+    <pre>
+$ hadolint --require-label version
+    </pre>
+    When a label-schema is specified, all labels within that schema must be present.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox
+LABEL version="1.0.1"</pre>

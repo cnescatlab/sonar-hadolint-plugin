@@ -1,0 +1,20 @@
+<h2>Rationale :</h2>
+<p>
+    <a href="https://github.com/opencontainers/image-spec/blob/master/annotations.md">Some standards</a> require a source control identifier be specified for the software within an image.
+</p>
+<p>
+    This rule is activated by specifying a label-schema including a label of type <strong>hash</strong>.
+    This can be specified via config file :
+    <pre>label-schema:
+  refno: hash</pre>
+    or via command line:
+    <pre>$ hadolint --require-label refno:hash Dockerfile</pre>
+</p>
+<h2>Problematic code :</h2>
+<pre>LABEL refno="abc-not-a-git-hash-def"</pre>
+<h2>Correct code :</h2>
+<pre>LABEL refno="0ef48a1"</pre>
+<h2>Note :</h2>
+<p>
+    This rule does not expand variables. It requires the value of a label to be a literal git hash, though both short (7-digit) and long (40-digit) hashes are ok.
+</p>

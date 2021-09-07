@@ -1,0 +1,11 @@
+<h2>Rationale :</h2>
+<p>
+    These three cases are errors in Dockerfiles.
+    See: <a href="https://docs.docker.com/engine/reference/builder/#onbuild">https://docs.docker.com/engine/reference/builder/#onbuild</a>
+</p>
+<h2>Problematic code :</h2>
+<pre>ONBUILD ONBUILD /bin/true
+ONBUILD FROM debian
+ONBUILD MAINTAINER Ron Weasley</pre>
+<h2>Correct code :</h2>
+<pre>None of the above.</pre>
