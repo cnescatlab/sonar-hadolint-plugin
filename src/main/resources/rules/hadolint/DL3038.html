@@ -1,0 +1,10 @@
+<h2>Rationale :</h2>
+<p>
+Omitting the non-interactive switch causes the command to fail during the build process, because <strong>dnf</strong> would expect manual input. Use the <strong>-y</strong> or the equivalent <strong>--assumeyes</strong> flag to avoid this.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM fedora:32
+RUN dnf install httpd-2.4.46 && dnf clean all</pre>
+<h2>Correct code :</h2>
+<pre>FROM fedora:32
+RUN dnf install -y httpd-2.4.46 && dnf clean all</pre>

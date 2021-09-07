@@ -1,0 +1,15 @@
+<h2>Rationale :</h2>
+<p>
+Providing more than one <strong>HEALTHCHECK</strong> instruction per stage is confusing, error prone and possibly makes for larger than necessary Docker images.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM busybox
+HEALTHCHECK CMD /bin/healthcheck
+[...]
+HEALTHCHECK CMD /bin/something</pre>
+<h2>Correct code :</h2>
+<pre>FROM busybox
+HEALTHCHECK CMD /bin/healthcheck</pre>
+or
+<pre>FROM busybox
+HEALTHCHECK NONE</pre>
