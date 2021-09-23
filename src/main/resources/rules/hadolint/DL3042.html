@@ -1,0 +1,9 @@
+<h2>Rationale :</h2>
+<p>
+    Once a package is installed, it does not need to be re-installed and the Docker cache can be leveraged instead.
+    Since the pip cache makes the images larger and is not needed, it's better to disable it.
+</p>
+<h2>Problematic code :</h2>
+<pre>RUN pip3 install MySQL_python</pre>
+<h2>Correct code :</h2>
+<pre>RUN pip3 install --no-cache-dir MySQL_python</pre>

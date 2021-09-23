@@ -1,0 +1,21 @@
+<h2>Rationale :</h2>
+<p>
+    Specifying a version either for the resulting image or for the software contained within is often a crucial part of release engineering.
+    <a href="https://semver.org/">Semantic versioning</a> allows to do so in a well understood manner, which also communicates extend of changes between versions or possible incompatibilities.
+</p>
+<p>
+    This rule is activated by specifying a label-schema including a label of type <strong>semver</strong>.
+    This can be specified via config file :
+    <pre>label-schema:
+  version: semver</pre>
+    or via command line:
+    <pre>$ hadolint --require-label version:semver Dockerfile</pre>
+</p>
+<h2>Problematic code :</h2>
+<pre>LABEL version="something-other-than-a-version-number"</pre>
+<h2>Correct code :</h2>
+<pre>LABEL version="1.0.0-rc1"</pre>
+<h2>Note :</h2>
+<p>
+    This rule does not expand variables. It requires the value of a label to be a literal semantic version number.
+</p>

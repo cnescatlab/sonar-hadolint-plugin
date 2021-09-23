@@ -1,0 +1,14 @@
+{
+    "title": "Avoid cache directory with pip install --no-cache-dir <package>",
+    "type": "CODE_SMELL",
+    "status": "ready",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "5min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ],
+    "defaultSeverity": "MAJOR"
+  }

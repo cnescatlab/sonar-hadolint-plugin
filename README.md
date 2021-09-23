@@ -53,11 +53,13 @@ Go to the project page to find indications : https://github.com/hadolint/hadolin
 #### Plugin's properties
 - `sonar.lang.patterns.dockerfile`: 
   - Comma separated list of patterns matching Dockerfiles inside your project.  
-  - This property **MUST** be defined if you want the plugin to work.  
   - **/!\\** _Those patterns must match Dockerfiles only ! You will have issues if they match another analyzed language._
+  - Default: `Dockerfile`.
+  - Example: `**/Dockerfile,subdir/Dockerfile-example`
 - `sonar.hadolint.reports.path`: 
-  - Comma separated list of path to Hadolint reports in checkstyle format.
+  - Comma separated list of path to Hadolint reports in checkstyle format. You can use wildcards.
   - Default: `hadolint-report.xml`.
+  - Example : `**/hadolint-report.xml`
 
 These properties can be defined in a `sonar-project.properties` files, or as command line arguments when you start the Sonar Scanner :  
 `sonar-scanner -Dsonar.lang.patterns.dockerfile=Dockerfile,some-dir/Dockerfile.* -Dsonar.hadolint.reports.path=results/report.xml`  
@@ -67,6 +69,7 @@ These properties can be defined in a `sonar-project.properties` files, or as com
 |   plugin version   |    hadolint version     | supported SonarQube version |
 |:------------------:|:-----------------------:|:---------------------------:|
 |        1.0.0       |          1.18.x         |        7.9 -> 8.4           |
+|        1.1.0       |          2.6.1          |           8.9.x             |
 
 ### Building the plugin
 If you want to build the plugin :

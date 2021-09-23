@@ -1,0 +1,10 @@
+<h2>Rationale :</h2>
+<p>
+    Docker will not expand a variable within the same <strong>ENV</strong> statement where it is defined. While it will not crash Docker, it carries a high likeliehood of errors.
+</p>
+<h2>Problematic code :</h2>
+<pre>ENV FOO=bar \
+BAZ=${FOO}/bla</pre>
+<h2>Correct code :</h2>
+<pre>ENV FOO=bar
+ENV BAZ=${FOO}/bla</pre>

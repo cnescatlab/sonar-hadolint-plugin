@@ -1,0 +1,9 @@
+<h2>Rationale :</h2>
+<p>
+    This rule is activated by specifying a label-schema to hadolint.
+    When a label is required by the specified label-schema, it should not be empty or else there would be no sense in requiring the label in the first place.
+</p>
+<h2>Problematic code :</h2>
+<pre>LABEL oopsie=""</pre>
+<h2>Correct code :</h2>
+<pre>LABEL oopsie="whoopsie"</pre>

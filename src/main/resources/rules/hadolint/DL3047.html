@@ -1,0 +1,13 @@
+<h2>Rationale :</h2>
+<p>
+    <strong>wget</strong> without flag <strong>--progress</strong> will result in excessively bloated build logs when downloading larger files.
+    That's because it outputs a line for each fraction of a percentage point while downloading a big file.
+</p>
+<h2>Problematic code :</h2>
+<pre>FROM ubuntu:20
+RUN wget https://example.com/big_file.tar</pre>
+<h2>Correct code :</h2>
+<pre>FROM ubuntu:20
+RUN wget --progress=dot:giga https://example.com/big_file.tar</pre>
+<pre>FROM ubuntu:20
+RUN wget -nv https://example.com/big_file.tar</pre>

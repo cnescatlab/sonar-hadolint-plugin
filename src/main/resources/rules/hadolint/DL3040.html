@@ -1,0 +1,10 @@
+<h2>Rationale :</h2>
+<p>
+    Clean cached package data after installation to reduce image size.
+    <a href="https://docs.docker.com/engine/articles/dockerfile_best-practices/">https://docs.docker.com/engine/articles/dockerfile_best-practices/</a>
+    Clean up must be performed in the same RUN step, otherwise it will not affect image size.
+</p>
+<h2>Problematic code :</h2>
+<pre>RUN dnf install -y httpd-2.24.2</pre>
+<h2>Correct code :</h2>
+<pre>RUN dnf install -y httpd-2.24.2 && dnf clean all</pre>

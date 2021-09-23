@@ -1,0 +1,9 @@
+<h2>Rationale :</h2>
+<p>
+    In a Dockerfile, using the <strong>useradd</strong> command without <strong>-l</strong> option and a big UID (more than 5 digits) will result in Docker creating a huge log file (several GB).
+    This could break the docker build with a <strong>no space left on device</strong> error and impact your entire build system.
+</p>
+<h2>Problematic code :</h2>
+<pre>RUN useradd -u 99900000 user</pre>
+<h2>Correct code :</h2>
+<pre>RUN useradd -l -u 99900000 user</pre>

@@ -1,0 +1,18 @@
+<h2>Rationale :</h2>
+<p>
+    This rule is activated by specifying a label-schema including a label of type email.
+    This can be specified via config file :
+    <pre>label-schema:
+  maintainer: email</pre>
+    or via command line:
+    <pre>$ hadolint --require-label maintainer:email Dockerfile</pre>
+</p>
+<h2>Problematic code :</h2>
+<pre>LABEL maintainer="foo-bar"</pre>
+<h2>Correct code :</h2>
+<pre>LABEL maintainer="foo@bar.com"</pre>
+<h2>Note :</h2>
+<p>
+    This rule does not expand variables.
+    It requires the value of a label to be a literal email compliant with <a href="https://tools.ietf.org/html/rfc5322">RFC 5322</a>.
+</p>

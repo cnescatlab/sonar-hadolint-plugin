@@ -1,0 +1,14 @@
+{
+    "title": "ONBUILD, FROM or MAINTAINER triggered from within ONBUILD instruction.",
+    "type": "BUG",
+    "status": "ready",
+    "remediation": {
+      "func": "Constant\/Issue",
+      "constantCost": "15min"
+    },
+    "tags": [
+      "dockerfile",
+      "hadolint"
+    ],
+    "defaultSeverity": "BLOCKER"
+  }

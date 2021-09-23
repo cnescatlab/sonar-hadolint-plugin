@@ -23,6 +23,7 @@ import fr.cnes.sonar.plugins.hadolint.model.CheckstyleReport;
 import fr.cnes.sonar.plugins.hadolint.rules.HadolintRulesDefinition;
 import fr.cnes.sonar.plugins.hadolint.settings.HadolintPluginProperties;
 import fr.cnes.sonar.plugins.hadolint.model.XmlHandler;
+import fr.cnes.sonar.plugins.hadolint.utils.DirectoryScanner;
 
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
@@ -37,6 +38,7 @@ import org.sonar.api.config.Configuration;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
+import org.sonar.api.utils.WildcardPattern;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,8 +46,8 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
- * Executed during sonar-scanner call.
- * Import checkstyle formatted Hadolint reports into SonarQube.
+ * Executed during sonar-scanner call. Import checkstyle formatted Hadolint
+ * reports into SonarQube.
  */
 public class HadolintSensor implements Sensor {
 
@@ -95,17 +97,18 @@ public class HadolintSensor implements Sensor {
         final List<String> reportFiles = getReportFiles(config, fileSystem);
 
         // If exists, unmarshal each xml result file.
-        for(final String reportPath : reportFiles) {
+        for (final String reportPath : reportFiles) {
             try {
                 // Unmarshall the xml.
                 final FileInputStream file = new FileInputStream(fileSystem.resolvePath(reportPath));
-                final CheckstyleReport checkstyleReport = (CheckstyleReport) XmlHandler.unmarshal(file, CheckstyleReport.class);
+                final CheckstyleReport checkstyleReport = (CheckstyleReport) XmlHandler.unmarshal(file,
+                        CheckstyleReport.class);
                 // Retrieve file in a SonarQube format.
                 final Map<String, InputFile> scannedFiles = getScannedFiles(fileSystem, checkstyleReport);
 
                 // Handles issues.
                 for (final CheckstyleFile checkstyleFile : checkstyleReport.getCheckstyleFiles()) {
-                    for(final CheckstyleError checkstyleError : checkstyleFile.getChecktyleErrors()) {
+                    for (final CheckstyleError checkstyleError : checkstyleFile.getChecktyleErrors()) {
 
                         if (isRuleActive(activeRules, checkstyleError.getSource())) { // manage active rules
                             saveIssue(sensorContext, scannedFiles, checkstyleError, checkstyleFile);
@@ -128,18 +131,19 @@ public class HadolintSensor implements Sensor {
      * This method saves an issue into the SonarQube service.
      *
      * @param context A SensorContext to reach SonarQube services.
-     * @param files Map containing files in SQ format.
-     * @param issue A AnalysisRule with the convenient format for Hadolint.
+     * @param files   Map containing files in SQ format.
+     * @param issue   A AnalysisRule with the convenient format for Hadolint.
      */
-    static void saveIssue(final SensorContext context, final Map<String, InputFile> files, final CheckstyleError issue, final CheckstyleFile file) {
+    static void saveIssue(final SensorContext context, final Map<String, InputFile> files, final CheckstyleError issue,
+            final CheckstyleFile file) {
 
         // Retrieve the file containing the issue.
         final InputFile inputFile = files.getOrDefault(file.getName(), null);
 
-        if(inputFile!=null) {
+        if (inputFile != null) {
             // Retrieve the ruleKey if it exists.
-            final RuleKey ruleKey = RuleKey.of(HadolintRulesDefinition.getRepositoryKeyForLanguage(DockerfileLanguage.KEY), 
-                    issue.getSource());
+            final RuleKey ruleKey = RuleKey
+                    .of(HadolintRulesDefinition.getRepositoryKeyForLanguage(DockerfileLanguage.KEY), issue.getSource());
 
             // Create a new issue for SonarQube, but it must be saved using NewIssue.save().
             final NewIssue newIssue = context.newIssue();
@@ -181,7 +185,8 @@ public class HadolintSensor implements Sensor {
             if (inputFile != null) {
                 result.put(file.getName(), inputFile);
             } else {
-                LOGGER.error(String.format("The source file '%s' mentionned in Hadolint report was not found.", file.getName()));
+                LOGGER.error(String.format("The source file '%s' mentionned in Hadolint report was not found.",
+                        file.getName()));
             }
         }
 
@@ -196,22 +201,41 @@ public class HadolintSensor implements Sensor {
      * @return Return a list of path 'findable' in the file system.
      */
     private List<String> getReportFiles(final Configuration config, final FileSystem fileSystem) {
-        // Contains the result to be returned.
-        final List<String> result = new ArrayList<>();
+        // List of found reports
+        List<String> result = new ArrayList<>();
 
         // Retrieves the non-verified path list from the SonarQube property.
-        final String[] pathArray = config.getStringArray(HadolintPluginProperties.REPORT_PATH_KEY);
+        String reportPathPropertyKey = HadolintPluginProperties.REPORT_PATH_KEY;
+        final String reportPaths = config.get(reportPathPropertyKey)
+                .orElse(HadolintPluginProperties.REPORT_PATH_DEFAULT);
 
         // Check if each path is known by the file system and add it to the processable
-        // path list,
-        // otherwise print a warning and ignore this result file.
-        for (String path : pathArray) {
-            final File file = new File(fileSystem.baseDir(), path);
-            if (file.exists() && file.isFile()) {
-                result.add(path);
-                LOGGER.info(String.format("Result file %s has been found and will be processed.", path));
+        // path list, otherwise print a warning and ignore this report file.
+        DirectoryScanner scanner = null;
+        List<String> includedFiles = null;
+        String baseDirPath = fileSystem.baseDir().getPath();
+
+        for (String reportPath : reportPaths.split(",")) {
+            scanner = new DirectoryScanner(new File(baseDirPath), WildcardPattern.create(reportPath));
+            includedFiles = scanner.getIncludedFiles();
+
+            if (includedFiles.isEmpty()) {
+                if (config.hasKey(reportPathPropertyKey)) {
+                    // try absolute path
+                    File file = new File(reportPath);
+                    if (!file.exists() || !file.isFile()) {
+                        LOGGER.warn("No report was found using pattern {}", reportPath);
+                    } else {
+                        result.add(file.getPath());
+                        LOGGER.info("Report {} was found and will be processed", file.getPath());
+                    }
+                } else {
+                    LOGGER.debug("No report was found using default pattern");
+                }
             } else {
-                LOGGER.warn(String.format("Result file %s has not been found and wont be processed.", path));
+                result.addAll(includedFiles);
+                LOGGER.info("Reports were found ({}) using pattern {} and will be processed", includedFiles.size(),
+                        reportPath);
             }
         }
 
@@ -231,5 +255,3 @@ public class HadolintSensor implements Sensor {
         return activeRules.find(ruleKeyDockerfile) != null;
     }
 }
-
-
