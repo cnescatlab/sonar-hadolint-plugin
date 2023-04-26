@@ -1,3 +1,9 @@
+## :warning: Deprecation notice
+
+This project is no longer maintained as SonarQube consider hadolint as an external analyzer, also, hadolint can generate an output readable by sonarqube. Feel free to fork this project and adapt plugin to your needs if necessary. Code is available as-is: we do not give any support for this project anymore.
+
+Please refer to the [hadolint documentation](https://github.com/hadolint/hadolint#cli) and the [sonarqube documentation about external analyzer](https://docs.sonarqube.org/latest/analyzing-source-code/importing-external-issues/importing-third-party-issues/) if needed.
+
 # Hadolint SonarQube Plugin
 [![Build Status](https://travis-ci.org/cnescatlab/sonar-hadolint-plugin.svg?branch=dev)](https://travis-ci.org/cnescatlab/sonar-hadolint-plugin)
 [![SonarQube Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.cnes.sonarqube.plugins%3Asonar-hadolint-plugin)
